@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LAB workshopy · Lukáš Zimmerman × iStores LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@144,900&display=swap" rel="stylesheet">
+<style>
+/* ── Farby a písmo podľa manuálu značky Lukáš Zimmerman ── */
+:root{
+  --emerald:#0B6E4F; --emerald-dark:#084C37; --emerald-light:#DCEFE6;
+  --terra:#E2583E; --terra-dark:#B03E27; --peach:#F6B48F; --cream:#FBF7F2; --atrament:#1F2A26;
+  --paper:#FBF7F2; --surface:#FFFDFA; --ink:#1F2A26; --gray:#5C6762; --line:#E6DFD4;
+  --heading:#084C37; --mark:#0B6E4F; --dot:#E2583E; --tint:#DCEFE6; --tint-ink:#084C37; --last:#B03E27;
+  --inter:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fraunces:"Fraunces",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#1F2A26; --surface:#26332E; --ink:#FBF7F2; --gray:#A9B4AE; --line:#34443D;
+    --heading:#DCEFE6; --mark:#FBF7F2; --dot:#F6B48F; --tint:#2B3F37; --tint-ink:#DCEFE6; --last:#F6B48F;
+    color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html,body{min-height:100%;overflow-x:hidden}
+body{font-family:var(--inter);font-size:16px;line-height:1.6;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--terra);outline-offset:3px;border-radius:6px}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:none}}
+@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+@keyframes dotIn{from{transform:scale(0)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Vosková textúra – vrchná vrstva na celej ploche, nikdy nezhorší čitateľnosť */
+.wax{position:fixed;inset:0;z-index:1000;pointer-events:none;mix-blend-mode:multiply;opacity:.12;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .36 0 0 0 0 .27 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .42 0 0 0 0 .3 0 0 1.6 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  background-size:260px 260px,900px 900px}
+@media (prefers-color-scheme:dark){.wax{mix-blend-mode:soft-light;opacity:.16}}
+
+/* Popisky – Inter 600, 11–13 px, verzálky */
+.cap{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--gray)}
+
+/* ── Logo ── */
+.zz{display:block;height:100%;width:auto;overflow:visible}
+.zz polyline{fill:none;stroke:var(--mark);stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.zz circle{fill:var(--dot)}
+.lockup{display:flex;align-items:center;flex-wrap:wrap;gap:0 1.1em;color:var(--ink)}   /* ochranná zóna = šírka znaku */
+.logo{display:flex;align-items:center;gap:.34em;font-weight:700;letter-spacing:-.025em}
+.logo .zz{height:1.72em}
+.logo .nm{line-height:.98}
+.logo.line .zz{height:1.3em}
+a.logo{color:inherit;text-decoration:none;border-radius:6px}
+a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--dot)}
+.lockup .with{display:inline-flex;align-items:center;gap:1.1em}
+.lockup .x{color:var(--gray);font-weight:500}
+.lockup .partner{font-weight:700;letter-spacing:-.015em;color:inherit;text-decoration:none;border-radius:6px}
+.lockup a.partner:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--dot)}
+
+/* ── Jazyk ── */
+.lang{display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.lang button{border:0;background:transparent;color:var(--gray);font-weight:600;font-size:12px;padding:5px 11px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--emerald);color:var(--cream)}
+.lang.float{position:fixed;z-index:600;top:calc(18px + env(safe-area-inset-top,0px));right:18px}
+
+/* ── Úvodná obrazovka (titulka manuálu) ── */
+#welcome{position:fixed;inset:0;z-index:500;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(24px,6vw,84px) clamp(22px,7vw,96px);transition:opacity .4s ease}
+#welcome.gone{opacity:0;pointer-events:none}
+.w-top{position:relative;z-index:2;font-size:clamp(17px,2vw,22px)}
+.art{position:absolute;inset:0;pointer-events:none}
+.art .block{position:absolute;top:0;right:clamp(130px,23vw,330px);width:clamp(110px,18.5vw,250px);height:min(64vh,620px);background:var(--emerald);border-radius:0 0 28px 28px;display:flex;justify-content:center;padding-top:clamp(36px,9vh,100px);transform-origin:top;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
+.art .block svg{width:60%;height:auto}
+.art .block polyline{fill:none;stroke:var(--cream);stroke-width:10;stroke-linecap:round;stroke-linejoin:round;--len:260;stroke-dasharray:260;animation:draw 1.1s .45s ease-out both}
+.art .layer{position:absolute;mix-blend-mode:multiply;opacity:.88}
+.art .peach{right:0;top:calc(clamp(150px,24vh,260px) + clamp(90px,11vw,150px));width:clamp(150px,21vw,280px);height:clamp(150px,26vh,240px);background:var(--peach);border-radius:28px 0 0 28px}
+.art .terra{right:clamp(28px,5.5vw,80px);top:clamp(150px,24vh,260px);width:clamp(110px,15vw,200px);aspect-ratio:1;border-radius:50%;background:var(--terra)}
+.art .ink{position:absolute;right:-18px;top:clamp(70px,11vh,110px);width:clamp(40px,5vw,62px);aspect-ratio:1;border-radius:50%;background:var(--atrament)}
+@media (prefers-color-scheme:dark){.art .layer{mix-blend-mode:normal}.art .ink{background:#0F1613}}
+.w-bottom{position:relative;z-index:2;max-width:640px}
+.w-bottom>*{animation:rise .6s ease both}
+.w-bottom>*:nth-child(2){animation-delay:.08s}.w-bottom>*:nth-child(3){animation-delay:.16s}.w-bottom>*:nth-child(4){animation-delay:.24s}
+.w-bottom h1{font-size:clamp(46px,6.8vw,92px);font-weight:700;line-height:.98;letter-spacing:-.035em;color:var(--ink);margin:14px 0 20px}
+.w-bottom p.lead{font-size:clamp(17px,1.6vw,20px);color:var(--gray);max-width:30em;margin-bottom:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;font-size:15.5px;font-weight:600;padding:13px 22px;border-radius:12px;background:var(--emerald);color:var(--cream);transition:background .15s,transform .1s}
+.btn:hover{background:var(--emerald-dark)}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{background:var(--tint);color:var(--gray);cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{background:var(--tint)}
+
+/* ── Aplikácia ── */
+#app{position:relative;z-index:1;min-height:100vh;padding:20px 20px 96px}
+#app[hidden]{display:none}
+.col{max-width:660px;margin:0 auto}
+.app-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 44px;font-size:15px}
+.intro h1{font-size:clamp(32px,6vw,40px);font-weight:700;line-height:1.1;letter-spacing:-.02em;color:var(--heading)}
+.goal{display:block;width:84px;height:auto;margin:16px 0 18px;overflow:visible}
+.goal polyline{fill:none;stroke:var(--mark);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;--len:190;stroke-dasharray:190;animation:draw .9s .2s ease-out both}
+.goal circle{fill:var(--dot);transform-origin:96px 47px;animation:dotIn .3s 1s cubic-bezier(.34,1.6,.64,1) both}
+.intro p{font-size:18px;color:var(--gray);max-width:32em}
+
+.next{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;gap:2px;margin:30px 0 26px;padding:18px 140px 18px 22px;border-radius:18px;background:var(--peach);color:var(--atrament)}
+.next[hidden]{display:none}
+.next::before{content:"";position:absolute;z-index:-1;right:-26px;top:-34px;width:118px;aspect-ratio:1;border-radius:50%;background:var(--terra);mix-blend-mode:multiply;opacity:.88}
+.next::after{content:"";position:absolute;z-index:-1;right:58px;bottom:-30px;width:86px;height:58px;border-radius:16px;background:var(--emerald);mix-blend-mode:multiply;opacity:.88}
+.next span{font-size:14px;font-weight:600}
+.next b{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+
+.bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.chip{cursor:pointer;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--emerald);border-color:var(--emerald);color:var(--cream)}
+.chip.arch{display:inline-flex;align-items:center;gap:6px;color:var(--gray)}
+
+#events{display:grid;gap:14px}
+.ev{display:flex;gap:18px;align-items:flex-start;padding:22px;border-radius:18px;background:var(--surface);border:1px solid var(--line);animation:rise .5s ease both}
+.date{position:relative;flex:none;width:62px;padding:10px 0 9px;border-radius:14px;background:var(--emerald);color:var(--cream);text-align:center}
+.ev .date::after{content:"";position:absolute;right:-13px;bottom:-13px;width:28px;aspect-ratio:1;border-radius:50%;background:var(--terra);mix-blend-mode:multiply;opacity:.88}
+.ev:nth-child(even) .date::after{background:var(--peach)}
+@media (prefers-color-scheme:dark){.ev .date::after{mix-blend-mode:normal;opacity:.9}}
+.date b{display:block;font-size:26px;font-weight:700;line-height:1;letter-spacing:-.03em}
+.date span{display:block;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin-top:4px;opacity:.9}
+.ev-main{flex:1;min-width:0}
+.ev h3{font-size:22px;font-weight:700;line-height:1.2;letter-spacing:-.02em;margin:6px 0 6px;color:var(--ink)}
+.ev .desc{color:var(--gray);font-size:15.5px}
+.place{display:flex;gap:7px;align-items:center;font-size:14.5px;font-weight:600;margin-top:12px}
+.place svg{flex:none;color:var(--emerald)}
+@media (prefers-color-scheme:dark){.place svg{color:var(--peach)}}
+.slots{display:grid;gap:12px;margin:16px 0 18px}
+.slot{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center;font-size:13.5px;font-weight:600}
+.slot .meter{grid-column:1 / -1;grid-row:2}
+.slot .t{font-variant-numeric:tabular-nums}
+.meter{height:6px;border-radius:99px;background:var(--tint);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--emerald)}
+@media (prefers-color-scheme:dark){.meter i{background:#3FA37F}}
+.slot .n{color:var(--gray);font-variant-numeric:tabular-nums}
+.slot .n.last{color:var(--last)}
+.slot.full{opacity:.5}
+.partner-line{font-size:14px;color:var(--gray);margin-top:4px}
+.partner-line b{color:var(--ink);font-weight:600}
+.join{margin-top:64px}
+.join-card{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;background:var(--surface);border:1px solid var(--line);padding:28px 24px 26px}
+.join-art span{position:absolute;z-index:-1;mix-blend-mode:multiply;opacity:.88}
+.ja-peach{top:-24px;right:-34px;width:150px;height:112px;border-radius:22px;background:var(--peach)}
+.ja-terra{top:26px;right:30px;width:78px;aspect-ratio:1;border-radius:50%;background:var(--terra)}
+@media (prefers-color-scheme:dark){.join-art span{mix-blend-mode:normal;opacity:.8}}
+.join h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading);margin-top:6px;max-width:calc(100% - 110px)}
+.join-lead{color:var(--gray);margin-top:10px;max-width:32em}
+.road-z{display:block;width:26px;height:22px;margin:26px 0 0;overflow:visible}
+.road-z polyline{fill:none;stroke:var(--mark);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.road-v{list-style:none;margin:4px 0 24px;padding:0}
+.road-v li{position:relative;padding:0 0 24px 42px}
+.road-v li::before{content:"";position:absolute;left:4px;top:5px;width:14px;aspect-ratio:1;border-radius:50%;background:var(--mark)}
+.road-v li::after{content:"";position:absolute;left:9px;top:25px;bottom:3px;width:4px;background:radial-gradient(circle,var(--mark) 1.9px,transparent 2.3px) center top/4px 11px repeat-y}
+.road-v li.goal-step{padding-bottom:0}
+.road-v li.goal-step::before{left:1px;top:2px;width:20px;background:var(--dot)}
+.road-v li.goal-step::after{display:none}
+.road-v b{display:block;font-size:16.5px;font-weight:700;line-height:1.35;color:var(--ink)}
+.road-v span{display:block;color:var(--gray);font-size:15px;margin-top:2px}
+.isic{display:inline-block!important;margin-top:9px!important;padding:6px 11px;border-radius:10px;background:var(--tint);color:var(--tint-ink)!important;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.isic s{color:var(--last);text-decoration-thickness:2px}
+.copy span{display:inline!important;margin:0!important;color:inherit!important;font-size:inherit!important}
+.copy{display:inline-flex;align-items:center;gap:8px;margin-top:9px;padding:7px 12px;border-radius:10px;border:1.5px dashed var(--emerald);background:transparent;color:var(--ink);font-size:15px;font-weight:700;cursor:pointer}
+@media (prefers-color-scheme:dark){.copy{border-color:var(--peach)}}
+.copy:hover{background:var(--tint)}
+.join .btn{text-decoration:none}
+.join-note{font-size:13px;color:var(--gray);margin-top:14px;max-width:34em}
+.join-link{display:inline-block;margin-top:16px;font-size:14px;font-weight:600;color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--dot)}
+.collab{margin-top:64px}
+.collab h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading)}
+.collab>p{color:var(--gray);margin:10px 0 22px;max-width:32em}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin-bottom:22px}
+.partners[hidden]{display:none}
+/* Dlaždice podľa manuálu (strana 8): plocha, priesvitné vrstvy a obrie orezané písmeno */
+.p-tile{position:relative;isolation:isolate;overflow:hidden;container-type:inline-size;aspect-ratio:4/5;border-radius:18px;padding:16px;display:flex;flex-direction:column;text-decoration:none;color:var(--atrament)}
+.p-tile .gl{position:absolute;z-index:-1;font-family:var(--fraunces);font-weight:900;line-height:1;font-size:120cqw;pointer-events:none;user-select:none}
+.p-tile strong{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.p-tile small{display:block;font-size:13px;line-height:1.35;margin-top:4px;max-width:88%}
+a.p-tile:hover{outline:2px solid var(--terra);outline-offset:3px}
+.p-tile.v1{background:var(--emerald);color:var(--cream);justify-content:flex-end}
+.p-tile.v1 .gl{color:var(--emerald-dark);left:-.04em;top:-.22em}
+.p-tile.v1 small{opacity:.85}
+.p-tile.v2{background:var(--cream);border:1px solid #E6DFD4;color:var(--emerald-dark)}
+.p-tile.v2::before{content:"";position:absolute;z-index:-2;right:0;top:46%;width:74%;height:32%;background:var(--peach);border-radius:16px 0 0 16px;opacity:.88}
+.p-tile.v2 .gl{color:var(--terra);mix-blend-mode:multiply;opacity:.9;left:6%;bottom:-.3em}
+.p-tile.v2 small{color:#5C6762}
+.p-tile.v3{background:var(--peach)}
+.p-tile.v3 .gl{color:var(--emerald-dark);right:-.08em;bottom:-.32em}
+.collab .btn{text-decoration:none}
+.empty{padding:32px 22px;border-radius:18px;background:var(--tint);color:var(--tint-ink);font-weight:600;line-height:1.6}
+
+.foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--gray)}
+.foot p{max-width:30em}
+.foot a{color:var(--ink);font-weight:600;text-decoration-color:var(--line);text-underline-offset:3px}
+.foot .lockup{font-size:13px}
+
+/* ── Spodné okno ── */
+#sheet{position:fixed;inset:0;z-index:700;display:none;align-items:flex-end;justify-content:center;background:rgba(31,42,38,.45);opacity:0;transition:opacity .2s}
+#sheet.open{opacity:1}
+.sh{background:var(--paper);width:100%;max-width:660px;max-height:90vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:14px 14px calc(26px + env(safe-area-inset-bottom,0px));transform:translateY(24px);transition:transform .26s cubic-bezier(.34,1.3,.64,1)}
+#sheet.open .sh{transform:none}
+.hero{position:relative;overflow:hidden;border-radius:18px;background:var(--emerald);color:var(--cream);padding:22px 22px 24px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end}
+.giant{position:absolute;right:-.02em;bottom:-.3em;font-family:var(--fraunces);font-weight:900;font-size:250px;line-height:1;color:var(--emerald-dark);opacity:.9;pointer-events:none;user-select:none}
+.hero>*:not(.giant){position:relative}
+.hero .cap{color:rgba(251,247,242,.8)}
+.hero h2{font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-top:6px;max-width:78%}
+.hero p{font-size:14.5px;opacity:.88;margin-top:6px;max-width:78%}
+.hero p+p{margin-top:2px}
+.x-btn{position:absolute!important;top:12px;right:12px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(251,247,242,.18);color:var(--cream);font-size:19px;line-height:1;cursor:pointer;z-index:2}
+.sh-plain{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 8px 16px}
+.sh-plain h2{font-size:26px;font-weight:700;letter-spacing:-.02em;color:var(--heading);line-height:1.15}
+.sh-plain .x-btn{position:static!important;background:var(--tint);color:var(--ink);flex:none}
+form{display:grid;gap:14px;padding:20px 8px 4px}
+.f{display:grid;gap:6px;font-size:13.5px;font-weight:600}
+.f input{font:inherit;font-size:16px;font-weight:400;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.f input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 4px var(--tint)}
+::placeholder{color:var(--gray);opacity:.7}
+fieldset{border:0;display:grid;gap:8px}
+legend{font-size:13.5px;font-weight:600;margin-bottom:6px}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:15px;font-weight:600}
+.opt span{display:flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums}
+.opt small{font-size:12.5px;color:var(--gray);font-weight:600}
+.opt:has(input:checked){border-color:var(--emerald);background:var(--tint)}
+.opt:has(input:disabled){opacity:.45;cursor:not-allowed}
+.opt input,.chk input{accent-color:var(--emerald);width:17px;height:17px;flex:none}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.55;color:var(--gray);cursor:pointer}
+.chk input{margin-top:3px}
+.err{color:var(--last);font-size:14px;font-weight:600}
+form .btn{width:100%;padding:15px;margin-top:4px}
+.done{padding:18px 10px 6px}
+.road{display:block;width:180px;height:auto;margin:6px 0 26px;overflow:visible}
+.road polyline{fill:none;stroke:var(--mark);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;--len:150;stroke-dasharray:150;animation:draw .6s ease-out both}
+.road .s{fill:var(--mark);animation:dotIn .25s cubic-bezier(.34,1.6,.64,1) both}
+.road .g{fill:var(--dot);animation:dotIn .35s 1.35s cubic-bezier(.34,1.6,.64,1) both}
+.done h2{font-size:30px;font-weight:700;letter-spacing:-.025em;line-height:1.1;color:var(--heading);margin-bottom:12px}
+.done p{color:var(--gray);margin-bottom:6px}
+.done p b{color:var(--ink)}
+.done .acts{display:grid;gap:8px;margin-top:22px}
+.arch{display:grid;gap:10px;padding:0 4px}
+.arch-item{display:flex;gap:14px;align-items:center;padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.arch-item .date{width:52px;background:var(--tint);color:var(--tint-ink)}
+.arch-item .date b{font-size:21px}
+.arch-item strong{display:block;font-size:15px;line-height:1.3}
+.arch-item small{font-size:13px;color:var(--gray)}
+
+.toast{position:fixed;left:16px;right:16px;margin:0 auto;width:fit-content;top:calc(16px + env(safe-area-inset-top,0px));z-index:900;background:var(--atrament);color:var(--cream);font-size:13.5px;font-weight:600;padding:11px 16px;border-radius:12px;max-width:calc(100% - 32px);text-align:center;animation:rise .3s ease both}
+@media (prefers-color-scheme:dark){.toast{background:var(--cream);color:var(--atrament)}}
+
+@media (max-width:720px){
+  .w-top{max-width:40vw;font-size:16px}
+  .w-top .lockup{row-gap:6px}
+  .art .block{right:30vw;width:22vw;height:40vh;border-radius:0 0 18px 18px}
+  .art .terra{width:27vw;right:2vw;top:17vh}
+  .art .peach{width:29vw;height:17vh;top:calc(17vh + 19vw)}
+  .art .ink{top:9vh;right:-14px;width:34px}
+}
+@media (max-width:520px){
+  #app{padding:16px 16px 80px}
+  .app-top{font-size:13.5px;padding-bottom:36px}
+  .ev{padding:18px;gap:14px}
+  .date{width:54px}
+  .date b{font-size:23px}
+  .ev h3{font-size:20px}
+  .giant{font-size:210px}
+}
+@media (max-height:700px) and (max-width:720px){.art .block{height:32vh}.art .terra{top:13vh}.art .peach{top:calc(13vh + 21vw);height:13vh}.w-bottom h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="wax" id="wax" aria-hidden="true"></div>
+
+<div class="lang float" id="lang" role="group" aria-label="Jazyk / Language">
+  <button type="button" data-lang="sk" aria-pressed="true">SK</button>
+  <button type="button" data-lang="en" aria-pressed="false">EN</button>
+</div>
+
+<!-- ══ ÚVOD ══ -->
+<div id="welcome">
+  <div class="art" aria-hidden="true">
+    <div class="block"><svg viewBox="0 0 64 100"><polyline points="7,7 51,7 9,50 51,50 9,93 51,93"/></svg></div>
+    <div class="layer peach"></div>
+    <div class="layer terra"></div>
+    <div class="ink"></div>
+  </div>
+  <div class="w-top" id="wLogo"></div>
+  <div class="w-bottom">
+    <p class="cap" data-i18n="eyebrow"></p>
+    <h1 data-i18n="welcomeTitle"></h1>
+    <p class="lead" data-i18n="welcomeLead"></p>
+    <button class="btn" id="start" type="button" data-i18n="start"></button>
+  </div>
+</div>
+
+<!-- ══ APLIKÁCIA ══ -->
+<div id="app" hidden>
+  <div class="col">
+    <div class="app-top"><div id="aLogo"></div></div>
+
+    <header class="intro">
+      <h1 data-i18n="appTitle"></h1>
+      <svg class="goal" viewBox="0 0 110 56" aria-hidden="true"><polyline points="6,6 66,6 8,50 70,50"/><circle cx="96" cy="47" r="8"/></svg>
+      <p data-i18n="tagline"></p>
+    </header>
+
+    <div class="next" id="next" hidden><span data-i18n="nextIn"></span><b id="cd">--:--:--</b></div>
+
+    <div class="bar" id="bar"></div>
+    <div id="events"></div>
+
+    <section class="join" id="lab">
+      <div class="join-card">
+        <div class="join-art" aria-hidden="true"><span class="ja-peach"></span><span class="ja-terra"></span></div>
+        <p class="cap" data-i18n="joinEyebrow"></p>
+        <h2 data-i18n="joinTitle"></h2>
+        <p class="join-lead" data-i18n="joinLead"></p>
+        <svg class="road-z" viewBox="0 0 26 22" aria-hidden="true"><polyline points="4,3 22,3 11,19"/></svg>
+        <ol class="road-v">
+          <li><b data-i18n="j1t"></b><span data-i18n="j1d"></span></li>
+          <li><b data-i18n="j2t"></b><span data-i18n="j2d"></span></li>
+          <li><b data-i18n="j3t"></b><span data-i18n="j3d"></span><span class="isic" aria-hidden="true"><s>S</s> 421 012 345 678 <s>A</s></span></li>
+          <li><b data-i18n="j4t"></b><span data-i18n="j4d"></span></li>
+          <li><b data-i18n="j5t"></b><span data-i18n="j5d"></span><button class="copy" type="button" id="copyName"><span id="ambName">Lukáš Zimmerman</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></li>
+          <li><b data-i18n="j6t"></b><span data-i18n="j6d"></span></li>
+          <li class="goal-step"><b data-i18n="j7t"></b></li>
+        </ol>
+        <a class="btn" id="joinCta" target="_blank" rel="noopener" data-i18n="joinCta"></a>
+        <p class="join-note" data-i18n="joinNote"></p>
+      </div>
+    </section>
+
+    <section class="collab" id="spoluprace">
+      <h2 data-i18n="collabTitle"></h2>
+      <p data-i18n="collabLead"></p>
+      <div class="partners" id="partners"></div>
+      <a class="btn ghost" id="collabCta" target="_blank" rel="noopener" data-i18n="collabCta"></a>
+    </section>
+
+    <footer class="foot">
+      <p><span data-i18n="who"></span><br><span data-i18n="questions"></span> <a href="mailto:lab@istores.sk">lab@istores.sk</a>, <a href="https://instagram.com/istores.lab" target="_blank" rel="noopener">@istores.lab</a></p>
+      <div id="fLogo"></div>
+    </footer>
+  </div>
+</div>
+
+<div id="sheet" aria-hidden="true"><div class="sh" id="sh" role="dialog" aria-modal="true"></div></div>
+
+<script>
+/* =========================================================
+   NASTAVENIA
+   API_URL  – sem neskôr vložíme adresu Google Apps Scriptu.
+              Kým je prázdna, beží ukážkový režim a registrácie
+              sa nikam neukladajú.
+   texture  – sem môžeš dať cestu k enkaustika-vrstva.png
+              (napr. "enkaustika-vrstva.png"). Kým je prázdna,
+              použije sa jemná textúra vytvorená v kóde.
+   ========================================================= */
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbwgjlu5_mLUGv58GQh-k1wterakPV-9jfY7G5zWrDheQqSk_WdxGrlv2y08YdCthWSp/exec",
+  partner: "iStores LAB",
+  partnerUrl: "https://www.istores.sk/lab",
+  joinUrl: "https://www.istores.sk/lab#kontakt",   // registrácia do programu iStores LAB
+  ambassador: "Lukáš Zimmerman",                    // meno, ktoré uvedú pri registrácii
+  instagram: "https://www.instagram.com/lukas.zmmrmn/",
+  texture: "",
+  textureOpacity: 0.35
+};
+
+/* Ukážkové workshopy – presne v tomto tvare budú v Google tabuľke.
+   letter  (nepovinné): obrie písmeno v okne registrácie, najradšej slovenské (Ľ, ô, ä, č, ž, š).
+   partner (nepovinné): s kým workshop robíš, zobrazí sa na karte aj pri registrácii. */
+const DEMO_EVENTS = [
+  { id:"fcp-ba", title:"Strih videa vo Final Cut Pro", title_en:"Video editing in Final Cut Pro", letter:"S", partner:"VŠMU",
+    desc:"Čo by si natočil, keby si vedel video dokončiť za jeden večer? Od záberov po hotový post.",
+    desc_en:"What would you film if you could finish the video in one evening? From footage to a finished post.",
+    city:"Bratislava", place:"iStores Bratislava (doplniť adresu)", date:"2026-11-12",
+    slots:[{id:"a",time:"16:00–17:00",capacity:10,taken:8},{id:"b",time:"17:30–18:30",capacity:10,taken:10}] },
+  { id:"ipad-mt", title:"Poznámky na iPade s Apple Pencil", title_en:"Notes on iPad with Apple Pencil", letter:"P", partner:"Mladí Lekári",
+    desc:"Skriptá, PDF aj vlastné poznámky na jednom mieste. Malé kroky, veľký poriadok.",
+    desc_en:"Study materials, PDFs and your own notes in one place. Small steps, big order.",
+    city:"Martin", place:"Martin (doplniť miesto)", date:"2026-11-26",
+    slots:[{id:"a",time:"15:00–16:00",capacity:12,taken:3}] },
+  { id:"short-online", title:"Skratky, ktoré ti ušetria hodiny", title_en:"Shortcuts that save you hours", letter:"Š",
+    desc:"Koľko času ti denne zjedia drobnosti? Spotlight, klávesové skratky a aplikácia Skratky.",
+    desc_en:"How much time do little things eat every day? Spotlight, keyboard shortcuts and the Shortcuts app.",
+    city:"Online", place:"Online, odkaz ti pošleme e-mailom", place_en:"Online, we’ll email you the link", date:"2026-12-03",
+    slots:[{id:"a",time:"18:00–19:00",capacity:30,taken:7}] },
+  { id:"key-nr", title:"Prezentácia v Keynote, ktorá zaujme", title_en:"A Keynote presentation that stands out", letter:"K", partner:"UKF",
+    desc:"Jedna myšlienka na slajd a veľa vzduchu. Ukážeme si, ako na to pri školskom projekte.",
+    desc_en:"One idea per slide and plenty of air. We’ll show you how for your school project.",
+    city:"Nitra", place:"iStores Nitra (doplniť adresu)", date:"2026-12-10",
+    slots:[{id:"a",time:"16:00–17:00",capacity:10,taken:5}] }
+];
+
+/* Spolupráce – url doplň, ak chceš, aby sa dlaždica dala rozkliknúť.
+   Zobrazuj tu len spolupráce, ktoré máš potvrdené. */
+const PARTNERS = [
+  { name:"Hra bez Hraníc", url:"" },
+  { name:"DAB / StartDAB", note:"Divadlo Andreja Bagara", note_en:"Andrej Bagar Theatre", url:"" },
+  { name:"DASATO", url:"" },
+  { name:"Mladí Lekári", url:"https://mladilekari.sk" },
+  { name:"VŠMU", note:"Vysoká škola múzických umení", note_en:"Academy of Performing Arts in Bratislava", url:"" },
+  { name:"UKF", note:"Univerzita Konštantína Filozofa v Nitre", note_en:"Constantine the Philosopher University in Nitra", url:"" }
+];
+
+/* ── Texty (tón: hravý, ľudský, tykáme, krátke vety) ── */
+const T = {
+  sk:{
+    eyebrow:"Workshopy iStores LAB",
+    welcomeTitle:"Malé kroky, veľké zmeny.",
+    welcomeLead:"Pozri, kedy a kde bude ďalší workshop, vyber si tému a rezervuj si miesto. Vstup je zadarmo.",
+    start:"Pozrieť workshopy",
+    appTitle:"Kam sa vyberieš najbližšie?",
+    tagline:"Workshopy pre študentov stredných aj vysokých škôl, ktorí chcú zo svojich zariadení viac. Vyber si tému a príď.",
+    nextIn:"Najbližší workshop začína o",
+    all:"Všetky", archive:"Archív",
+    archiveTitle:"Kde sme už boli", archiveEmpty:"Zatiaľ tu nič nie je. Prvý workshop je pred nami.",
+    left:n=>`ešte ${n} ${n===1?"miesto":n<5?"miesta":"miest"}`,
+    lastLeft:n=>`už len ${n} ${n===1?"miesto":"miesta"}`,
+    full:"plné", register:"Rezervovať miesto", soldOut:"Obsadené",
+    name:"Meno a priezvisko", email:"E-mail", school:"Škola", schoolPh:"napr. UKF alebo gymnázium v Martine",
+    slot:"Kedy prídeš?", free:(f,c)=>`voľné ${f} z ${c}`,
+    student:"Som študent a mám platný ISIC alebo ITIC.",
+    gdpr:"Súhlasím so spracovaním mena, e-mailu a názvu školy na účel registrácie na tento workshop. Ak máš menej ako 16 rokov, súhlas za teba dáva rodič.",
+    sending:"Rezervujem…",
+    eName:"Ako sa voláš? Vyplň meno a priezvisko.", eEmail:"Tento e-mail nevyzerá správne. Skontroluj ho.",
+    eSchool:"Doplň názov svojej školy.", eSlot:"Vyber si čas, kedy prídeš.",
+    eStudent:"Potvrď, že máš platný ISIC alebo ITIC.",
+    eGdpr:"Na registráciu potrebujeme tvoj súhlas so spracovaním údajov.",
+    eFull:"Tento čas sa medzitým zaplnil. Vyber si iný.", eDup:"S týmto e-mailom už na tento workshop registrácia je.",
+    eGeneric:"Registrácia neprešla. Skús to o chvíľu znova.",
+    doneTitle:"Miesto máš rezervované.", doneMail:e=>`Potvrdenie ti pošleme na ${e}.`,
+    doneRoad:"Prvý krok máš za sebou. Zvyšok cesty prejdeme spolu.",
+    calendar:"Pridať do kalendára", close:"Zavrieť",
+    demo:"Ukážkový režim: registrácia sa nikam neuložila.",
+    noEvents:"V tomto meste zatiaľ workshop nie je. Pozri iné mestá alebo sleduj @istores.lab.",
+    noneAtAll:"Ďalšie workshopy práve chystáme. Sleduj @istores.lab, nech ti nič neujde.",
+    loadErr:"Workshopy sa nenačítali. Obnov stránku.", loading:"Načítavam workshopy…",
+    who:"Workshopy sú pre študentov stredných aj vysokých škôl. Prines si ISIC alebo ITIC.",
+    partnerLabel:"Spolupráca:",
+    collabTitle:"Spolupráce",
+    joinEyebrow:"Program iStores LAB",
+    joinTitle:"Chceš z toho ešte viac?",
+    joinLead:"Ako člen programu iStores LAB máš zľavy na Mac a iPad, špeciálne akcie a komunitu ľudí, ktorí to majú rovnako. Registrácia trvá dve minúty.",
+    j1t:"Otvor registráciu na istores.sk", j1d:"Tlačidlo dole ťa hodí rovno k formuláru „Zaujal ťa iStores LAB?“.",
+    j2t:"Vyplň meno, e-mail, univerzitu a fakultu", j2d:"Všetky štyri polia sú povinné.",
+    j3t:"Zadaj číslo ISIC iba číslicami", j3d:"Do poľa „Číslo ISIC/ITIC preukazu“ napíš len číslice, bez písmen na začiatku a na konci. Z preukazu S 421 012 345 678 A teda zadáš 421012345678.",
+    j4t:"Zaškrtni „Chcem sa stať členom programu“", j4d:"Nájdeš to pod otázkou „Čo ťa zaujíma?“.",
+    j5t:"Ako ambasádora uveď mňa", j5d:"Do poľa „Kto je tvoj ambasádor?“ napíš moje meno. Ťukni naň a skopíruje sa.",
+    j6t:"Potvrď súhlas a klikni na Odoslať", j6d:"Povinný je len súhlas so spracovaním údajov pre účely odpovede. Súhlas na marketing je na tebe.",
+    j7t:"Hotovo. Vitaj v LABe.",
+    joinCta:"Registrovať sa do programu",
+    joinNote:"Členom programu môžeš byť, ak študuješ dennou formou na vysokej škole a máš aspoň 18 rokov. Na workshopy môžeš prísť aj bez členstva.",
+    copied:"Meno je skopírované.", joinLink:"Ešte nie si v programe iStores LAB? Pozri, ako sa pridať.",
+    collabLead:"Workshopy robím aj so školami a organizáciami, ktorým záleží na tom, aby mladí ľudia rástli. Máš nápad na spoločný workshop?",
+    collabCta:"Napíš mi na Instagram", igLabel:"Lukáš Zimmerman na Instagrame",
+    questions:"Otázky?", days:"d"
+  },
+  en:{
+    eyebrow:"iStores LAB workshops",
+    welcomeTitle:"Small steps, big changes.",
+    welcomeLead:"See when and where the next workshop is, pick a topic and book your spot. Entry is free.",
+    start:"See workshops",
+    appTitle:"Where are you heading next?",
+    tagline:"Workshops for high school and university students who want more from their devices. Pick a topic and come along.",
+    nextIn:"Next workshop starts in",
+    all:"All", archive:"Archive",
+    archiveTitle:"Where we’ve been", archiveEmpty:"Nothing here yet. The first workshop is still ahead.",
+    left:n=>`${n} ${n===1?"spot":"spots"} left`,
+    lastLeft:n=>`only ${n} ${n===1?"spot":"spots"} left`,
+    full:"full", register:"Book a spot", soldOut:"Fully booked",
+    name:"Full name", email:"Email", school:"School", schoolPh:"e.g. UKF or a high school in Martin",
+    slot:"When are you coming?", free:(f,c)=>`${f} of ${c} free`,
+    student:"I’m a student with a valid ISIC or ITIC card.",
+    gdpr:"I agree to the processing of my name, email and school for registering for this workshop. If you’re under 16, a parent gives consent for you.",
+    sending:"Booking…",
+    eName:"What’s your name? Fill in your full name.", eEmail:"That email doesn’t look right. Check it.",
+    eSchool:"Add your school.", eSlot:"Pick a time.",
+    eStudent:"Confirm you have a valid ISIC or ITIC card.",
+    eGdpr:"We need your consent to process your details.",
+    eFull:"This time just filled up. Pick another one.", eDup:"This email is already registered for this workshop.",
+    eGeneric:"Booking didn’t go through. Try again in a moment.",
+    doneTitle:"Your spot is booked.", doneMail:e=>`We’ll send a confirmation to ${e}.`,
+    doneRoad:"The first step is done. We’ll walk the rest of the way together.",
+    calendar:"Add to calendar", close:"Close",
+    demo:"Demo mode: the booking wasn’t saved.",
+    noEvents:"No workshop in this city yet. Check other cities or follow @istores.lab.",
+    noneAtAll:"New workshops are on the way. Follow @istores.lab so you don’t miss them.",
+    loadErr:"Workshops didn’t load. Refresh the page.", loading:"Loading workshops…",
+    who:"Workshops are for high school and university students. Bring your ISIC or ITIC card.",
+    partnerLabel:"Partner:",
+    collabTitle:"Collaborations",
+    joinEyebrow:"iStores LAB programme",
+    joinTitle:"Want even more?",
+    joinLead:"As an iStores LAB member you get discounts on Mac and iPad, special offers and a community of people who think like you. Signing up takes two minutes.",
+    j1t:"Open the sign-up on istores.sk", j1d:"The button below takes you straight to the form “Zaujal ťa iStores LAB?”.",
+    j2t:"Fill in your name, email, university and faculty", j2d:"All four fields are required.",
+    j3t:"Enter your ISIC number as digits only", j3d:"In the field “Číslo ISIC/ITIC preukazu”, type only the digits, without the letters at the start and end. From S 421 012 345 678 A you enter 421012345678.",
+    j4t:"Tick “Chcem sa stať členom programu”", j4d:"It’s the membership option under “Čo ťa zaujíma?” (What are you interested in?).",
+    j5t:"Name me as your ambassador", j5d:"In the field “Kto je tvoj ambasádor?” type my name. Tap it to copy.",
+    j6t:"Give consent and press Odoslať", j6d:"Only the consent to process your data for a reply is required. Marketing consent is up to you.",
+    j7t:"Done. Welcome to the LAB.",
+    joinCta:"Sign up for the programme",
+    joinNote:"Membership is for full-time university students aged 18+. You can come to the workshops without being a member.",
+    copied:"Name copied.", joinLink:"Not in the iStores LAB programme yet? See how to join.",
+    collabLead:"I also run workshops with schools and organisations that care about young people growing. Got an idea for a joint workshop?",
+    collabCta:"Message me on Instagram", igLabel:"Lukáš Zimmerman on Instagram",
+    questions:"Questions?", days:"d"
+  }
+};
+
+/* ── Pomocné ── */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let lang = "sk", events = [], past = [], city = null, partners = CONFIG.API_URL ? [] : PARTNERS, status = "loading";
+const t = k => T[lang][k];
+const loc = () => lang === "sk" ? "sk-SK" : "en-GB";
+const day = d => new Date(d + "T00:00:00");
+const fmt = (d,o) => new Intl.DateTimeFormat(loc(),o).format(day(d)).replace(/\.$/,"");
+const free = s => Math.max(0, s.capacity - s.taken);
+const isFull = e => e.slots.every(s => !free(s));
+const tr = (e,k) => (lang === "en" && e[k+"_en"]) || e[k];
+const startOf = (e,s) => { const [h,m] = s.time.split(/[–-]/)[0].trim().split(":"); const d = day(e.date); d.setHours(+h, +m || 0); return d; };
+const pin = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>';
+const screen = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>';
+const placeIcon = e => e.city === "Online" ? screen : pin;
+const partnerLine = e => e.partner ? `<p class="partner-line">${t("partnerLabel")} <b>${esc(e.partner)}</b></p>` : "";
+const dateBox = e => `<div class="date"><b>${day(e.date).getDate()}</b><span>${esc(fmt(e.date,{month:"short"}))}</span></div>`;
+
+/* Logo: znak ZZ s cieľovou bodkou + meno v Interi Bold */
+const MARK = '<svg class="zz" viewBox="0 0 64 100" aria-hidden="true"><polyline points="7,7 51,7 9,50 51,50 9,93 47,93"/><circle cx="58.5" cy="92.5" r="5.5"/></svg>';
+const logoMain = () => `<div class="lockup"><a class="logo" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš<br>Zimmerman</span></a><span class="with"><span class="x">×</span><a class="partner" href="${esc(CONFIG.partnerUrl)}" target="_blank" rel="noopener">${esc(CONFIG.partner)}</a></span></div>`;
+const logoLine = () => `<div class="lockup"><a class="logo line" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš Zimmerman</span></a><span class="with"><span class="x">×</span><a class="partner" href="${esc(CONFIG.partnerUrl)}" target="_blank" rel="noopener">${esc(CONFIG.partner)}</a></span></div>`;
+
+function toast(m){ const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role","status"); d.textContent = m; document.body.appendChild(d); setTimeout(() => d.remove(), 4000); }
+
+/* ── Texty a jazyk ── */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll("#lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
+  if ($("#wLogo")) $("#wLogo").innerHTML = logoMain();
+  $("#aLogo").innerHTML = logoLine();
+  $("#collabCta").href = CONFIG.instagram;
+  $("#joinCta").href = CONFIG.joinUrl;
+  $("#ambName").textContent = CONFIG.ambassador;
+  $("#partners").hidden = !partners.length;
+  $("#partners").innerHTML = partners.map((p, i) => {
+    const g = (p.letter || p.name.trim()[0] || "").slice(0,1);
+    const inner = `<span class="gl" aria-hidden="true">${esc(g)}</span><strong>${esc(p.name)}</strong>${p.note ? `<small>${esc(tr(p,"note"))}</small>` : ""}`;
+    const v = "v" + (i % 3 + 1);
+    return p.url ? `<a class="p-tile ${v}" href="${esc(p.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="p-tile ${v}">${inner}</div>`;
+  }).join("");
+  render();
+}
+
+/* ── Zoznam workshopov ── */
+function render(){
+  const cities = [...new Set(events.map(e => e.city))];
+  $("#bar").innerHTML =
+    `<button class="chip" data-city="" aria-pressed="${city === null}">${t("all")}</button>` +
+    cities.map(c => `<button class="chip" data-city="${esc(c)}" aria-pressed="${c === city}">${esc(c)}</button>`).join("") +
+    `<button class="chip arch" id="archBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"/><path d="M10 12h4"/></svg>${t("archive")}</button>`;
+
+  const list = events.filter(e => city === null || e.city === city);
+  $("#events").innerHTML = !events.length && status === "loading" ? `<div class="empty">${t("loading")}</div>`
+    : !events.length && status === "error" ? `<div class="empty">${t("loadErr")}</div>`
+    : !events.length ? `<div class="empty">${t("noneAtAll")}</div>`
+    : !list.length ? `<div class="empty">${t("noEvents")}</div>`
+    : list.map((e,i) => {
+      const full = isFull(e);
+      return `<article class="ev" style="animation-delay:${i*70}ms">
+        ${dateBox(e)}
+        <div class="ev-main">
+          <p class="cap">${esc(e.city)} · ${esc(fmt(e.date,{weekday:"long"}))}</p>
+          <h3>${esc(tr(e,"title"))}</h3>
+          <p class="desc">${esc(tr(e,"desc"))}</p>
+          ${partnerLine(e)}
+          <p class="place">${placeIcon(e)}<span>${esc(tr(e,"place"))}</span></p>
+          <div class="slots">${e.slots.map(s => { const f = free(s); return `
+            <div class="slot ${f ? "" : "full"}"><span class="t">${esc(s.time)}</span>
+              <span class="n ${f && f <= 2 ? "last" : ""}">${!f ? t("full") : f <= 2 ? t("lastLeft")(f) : t("left")(f)}</span>
+              <span class="meter"><i style="width:${Math.min(100, s.taken / s.capacity * 100)}%"></i></span></div>`; }).join("")}
+          </div>
+          <button class="btn" data-id="${esc(e.id)}" ${full ? "disabled" : ""}>${full ? t("soldOut") : t("register")}</button>
+        </div>
+      </article>`;
+    }).join("");
+}
+
+/* ── Odpočet ── */
+function tick(){
+  const now = new Date(); let best = null;
+  events.forEach(e => e.slots.forEach(s => { const d = startOf(e,s); if (d > now && (!best || d < best)) best = d; }));
+  $("#next").hidden = !best;
+  if (!best) return;
+  let x = Math.floor((best - now) / 1000);
+  const d = Math.floor(x / 86400); x %= 86400;
+  const p = n => String(n).padStart(2,"0");
+  $("#cd").textContent = (d ? `${d} ${t("days")} ` : "") + `${p(Math.floor(x/3600))}:${p(Math.floor(x%3600/60))}:${p(x%60)}`;
+}
+
+/* ── Spodné okno ── */
+function openSheet(html){
+  $("#sh").innerHTML = html;
+  const w = $("#sheet");
+  w.style.display = "flex"; w.setAttribute("aria-hidden","false");
+  requestAnimationFrame(() => w.classList.add("open"));
+  setTimeout(() => ($("#sh").querySelector("input:not([type=radio]):not([type=checkbox])") || $("#sh").querySelector(".x-btn"))?.focus(), 60);
+}
+function closeSheet(){
+  const w = $("#sheet");
+  w.classList.remove("open"); w.setAttribute("aria-hidden","true");
+  setTimeout(() => w.style.display = "none", 220);
+}
+const xBtn = `<button class="x-btn" type="button" data-close aria-label="${"Zavrieť"}">×</button>`;
+
+function openRegister(e){
+  const first = e.slots.find(s => free(s));
+  const letter = (e.letter || tr(e,"title").trim()[0] || "").slice(0,1);
+  openSheet(`
+    <div class="hero">
+      <span class="giant" aria-hidden="true">${esc(letter)}</span>
+      ${xBtn}
+      <p class="cap">${esc(fmt(e.date,{weekday:"long",day:"numeric",month:"long"}))}</p>
+      <h2 id="shTitle">${esc(tr(e,"title"))}</h2>
+      <p>${esc(tr(e,"place"))}</p>${e.partner ? `<p>${t("partnerLabel")} ${esc(e.partner)}</p>` : ""}
+    </div>
+    <form novalidate aria-labelledby="shTitle">
+      <label class="f">${t("name")}<input name="name" autocomplete="name"></label>
+      <label class="f">${t("email")}<input name="email" type="email" autocomplete="email"></label>
+      <label class="f">${t("school")}<input name="school" placeholder="${esc(t("schoolPh"))}"></label>
+      <fieldset><legend>${t("slot")}</legend>${e.slots.map(s => { const f = free(s); return `
+        <label class="opt"><span><input type="radio" name="slot" value="${esc(s.id)}" ${f ? "" : "disabled"} ${s === first ? "checked" : ""}>${esc(s.time)}</span><small>${f ? t("free")(f, s.capacity) : t("full")}</small></label>`; }).join("")}
+      </fieldset>
+      <label class="chk"><input type="checkbox" name="student">${t("student")}</label>
+      <label class="chk"><input type="checkbox" name="gdpr">${t("gdpr")}</label>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <p class="err" hidden></p>
+      <button class="btn" type="submit">${t("register")}</button>
+    </form>`);
+  $("#sh form").addEventListener("submit", ev => submit(ev, e));
+}
+
+async function submit(ev, e){
+  ev.preventDefault();
+  const f = ev.target, err = f.querySelector(".err"), btn = f.querySelector("[type=submit]");
+  const d = Object.fromEntries(new FormData(f));
+  const problem = !d.name?.trim() ? "eName" : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email || "") ? "eEmail"
+    : !d.school?.trim() ? "eSchool" : !d.slot ? "eSlot" : !d.student ? "eStudent" : !d.gdpr ? "eGdpr" : "";
+  if (problem){ err.textContent = t(problem); err.hidden = false; return; }
+  err.hidden = true; btn.disabled = true; btn.textContent = t("sending");
+  const slot = e.slots.find(s => s.id === d.slot);
+  const payload = { eventId:e.id, slotId:slot.id, name:d.name.trim(), email:d.email.trim(), school:d.school.trim(), lang, website:d.website || "" };
+  try{
+    if (CONFIG.API_URL){
+      const r = await fetch(CONFIG.API_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
+      const res = await r.json();
+      if (!res.ok) throw new Error(res.error === "full" ? "eFull" : res.error === "duplicate" ? "eDup" : res.error === "invalid" ? "eEmail" : "eGeneric");
+      slot.taken = res.taken ?? slot.taken + 1;
+    } else {
+      if (!free(slot)) throw new Error("eFull");
+      slot.taken++;
+      toast(t("demo"));
+    }
+    render();
+    showDone(e, slot, payload.email);
+  } catch(x){
+    err.textContent = T[lang][x.message] || t("eGeneric"); err.hidden = false;
+    btn.disabled = false; btn.textContent = t("register");
+  }
+}
+
+/* Záver: prerušovaná cesta – bodky sú kroky, ktoré sú ešte pred tebou */
+function showDone(e, s, email){
+  const steps = [30,48,66,84,102,120].map((x,i) => `<circle class="s" cx="${x}" cy="50" r="4.5" style="animation-delay:${.55 + i*.12}s"/>`).join("");
+  $("#sh").innerHTML = `
+    <div class="sh-plain">${'<span></span>'}${xBtn}</div>
+    <div class="done">
+      <svg class="road" viewBox="0 0 160 58" aria-hidden="true"><polyline points="6,6 66,6 10,50"/>${steps}<circle class="g" cx="146" cy="47" r="8"/></svg>
+      <h2>${t("doneTitle")}</h2>
+      <p><b>${esc(tr(e,"title"))}</b><br>${esc(fmt(e.date,{weekday:"long",day:"numeric",month:"long"}))}, ${esc(s.time)}<br>${esc(tr(e,"place"))}</p>
+      <p>${esc(t("doneMail")(email))}</p>
+      <p>${t("doneRoad")}</p>
+      <div class="acts">
+        <button class="btn" type="button" id="ics">${t("calendar")}</button>
+        <button class="btn ghost" type="button" data-close>${t("close")}</button>
+      </div>
+      <a class="join-link" href="#lab" data-close>${t("joinLink")}</a>
+    </div>`;
+  $("#ics").onclick = () => downloadIcs(e, s);
+}
+
+function downloadIcs(e, s){
+  const st = startOf(e, s);
+  const [h,m] = (s.time.split(/[–-]/)[1] || "").trim().split(":");
+  const en = new Date(st); if (h) en.setHours(+h, +m || 0); else en.setHours(st.getHours() + 1);
+  const z = d => d.toISOString().replace(/[-:]/g,"").split(".")[0] + "Z";
+  const ics = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Lukas Zimmerman//LAB workshopy//SK","BEGIN:VEVENT",
+    `UID:${e.id}-${s.id}@lab-workshopy`,`DTSTAMP:${z(new Date())}`,`DTSTART:${z(st)}`,`DTEND:${z(en)}`,
+    `SUMMARY:iStores LAB: ${tr(e,"title")}`,`LOCATION:${tr(e,"place")}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([ics], {type:"text/calendar"}));
+  a.download = `${e.id}.ics`; a.click();
+}
+
+function openArchive(){
+  openSheet(`<div class="sh-plain"><h2>${t("archiveTitle")}</h2>${xBtn}</div>
+    <div class="arch">${past.length ? past.map(e => `
+      <div class="arch-item">${dateBox(e)}<div><strong>${esc(tr(e,"title"))}</strong><small>${esc(e.city)}, ${esc(fmt(e.date,{day:"numeric",month:"long",year:"numeric"}))}</small></div></div>`).join("")
+      : `<div class="empty">${t("archiveEmpty")}</div>`}</div>`);
+}
+
+/* ── Udalosti ── */
+document.addEventListener("click", ev => {
+  const lb = ev.target.closest("#lang button"); if (lb){ lang = lb.dataset.lang; applyLang(); return; }
+  const ch = ev.target.closest(".chip[data-city]"); if (ch){ city = ch.dataset.city || null; render(); return; }
+  if (ev.target.closest("#archBtn")){ openArchive(); return; }
+  if (ev.target.closest("#copyName")){
+    const done = () => toast(t("copied"));
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(CONFIG.ambassador).then(done, () => toast(CONFIG.ambassador));
+    else toast(CONFIG.ambassador);
+    return;
+  }
+  const b = ev.target.closest("[data-id]"); if (b && !b.disabled){ openRegister(events.find(e => e.id === b.dataset.id)); return; }
+  if (ev.target.closest("[data-close]") || ev.target.id === "sheet") closeSheet();
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && $("#sheet").classList.contains("open")) closeSheet(); });
+$("#start").onclick = () => {
+  $("#welcome").classList.add("gone");
+  $("#app").hidden = false;
+  const l = $("#lang"); l.classList.remove("float"); $(".app-top").appendChild(l);
+  window.scrollTo(0,0);
+  setTimeout(() => $("#welcome").remove(), 450);
+};
+
+/* ── Štart ── */
+$("#fLogo").innerHTML = `<div class="lockup"><div class="logo line" role="img" aria-label="Lukáš Zimmerman">${MARK}<span class="nm">Lukáš Zimmerman</span></div></div>`;
+if (CONFIG.texture){
+  const w = $("#wax");
+  w.style.backgroundImage = `url("${CONFIG.texture}")`; w.style.backgroundSize = "cover"; w.style.opacity = CONFIG.textureOpacity;
+}
+/* Texty, logá a úvod sa ukážu hneď. Workshopy sa najprv vezmú z poslednej
+   návštevy (ak existuje) a hneď potom sa načítajú čerstvé z tabuľky. */
+const CACHE_KEY = "lab-workshopy-cache";
+function useData(data, parts){
+  const today = new Date(); today.setHours(0,0,0,0);
+  events = (data || []).filter(e => day(e.date) >= today).sort((a,b) => a.date.localeCompare(b.date));
+  past = (data || []).filter(e => day(e.date) < today).sort((a,b) => b.date.localeCompare(a.date));
+  if (parts) partners = parts;
+  applyLang(); tick();
+}
+applyLang(); tick(); setInterval(tick, 1000);
+(async function load(){
+  if (!CONFIG.API_URL){ status = "ok"; useData(DEMO_EVENTS, null); return; }
+  try {
+    const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (c && Array.isArray(c.events)){ status = "ok"; useData(c.events, c.partners || []); }
+  } catch {}
+  try {
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 20000);
+    const res = await (await fetch(CONFIG.API_URL, { signal: ctrl.signal })).json();
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(res.error);
+    status = "ok"; useData(res.events, res.partners || []);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ events: res.events, partners: res.partners })); } catch {}
+  } catch {
+    if (status === "loading"){ status = "error"; render(); }
+  }
+})();
+</script>
+</body>
+</html>
