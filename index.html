@@ -40,9 +40,12 @@ button{font-family:inherit}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* Vosková textúra – vrchná vrstva na celej ploche, nikdy nezhorší čitateľnosť */
-.wax{position:fixed;inset:0;z-index:1000;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .36 0 0 0 0 .27 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-@media (prefers-color-scheme:dark){.wax{mix-blend-mode:soft-light;opacity:.12}}
+.wax{position:fixed;inset:0;z-index:1000;pointer-events:none;mix-blend-mode:multiply;opacity:.12;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .36 0 0 0 0 .27 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .42 0 0 0 0 .3 0 0 1.6 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  background-size:260px 260px,900px 900px}
+@media (prefers-color-scheme:dark){.wax{mix-blend-mode:soft-light;opacity:.16}}
 
 /* Popisky – Inter 600, 11–13 px, verzálky */
 .cap{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--gray)}
@@ -105,9 +108,12 @@ a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-un
 .goal circle{fill:var(--dot);transform-origin:96px 47px;animation:dotIn .3s 1s cubic-bezier(.34,1.6,.64,1) both}
 .intro p{font-size:18px;color:var(--gray);max-width:32em}
 
-.next{display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap;margin:30px 0 26px;padding:16px 20px;border-radius:16px;background:var(--tint)}
-.next span{font-size:14.5px;font-weight:600;color:var(--tint-ink)}
-.next b{font-size:22px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.next{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;gap:2px;margin:30px 0 26px;padding:18px 140px 18px 22px;border-radius:18px;background:var(--peach);color:var(--atrament)}
+.next[hidden]{display:none}
+.next::before{content:"";position:absolute;z-index:-1;right:-26px;top:-34px;width:118px;aspect-ratio:1;border-radius:50%;background:var(--terra);mix-blend-mode:multiply;opacity:.88}
+.next::after{content:"";position:absolute;z-index:-1;right:58px;bottom:-30px;width:86px;height:58px;border-radius:16px;background:var(--emerald);mix-blend-mode:multiply;opacity:.88}
+.next span{font-size:14px;font-weight:600}
+.next b{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 
 .bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
 .chip{cursor:pointer;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink)}
@@ -116,7 +122,10 @@ a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-un
 
 #events{display:grid;gap:14px}
 .ev{display:flex;gap:18px;align-items:flex-start;padding:22px;border-radius:18px;background:var(--surface);border:1px solid var(--line);animation:rise .5s ease both}
-.date{flex:none;width:62px;padding:10px 0 9px;border-radius:14px;background:var(--emerald);color:var(--cream);text-align:center}
+.date{position:relative;flex:none;width:62px;padding:10px 0 9px;border-radius:14px;background:var(--emerald);color:var(--cream);text-align:center}
+.ev .date::after{content:"";position:absolute;right:-13px;bottom:-13px;width:28px;aspect-ratio:1;border-radius:50%;background:var(--terra);mix-blend-mode:multiply;opacity:.88}
+.ev:nth-child(even) .date::after{background:var(--peach)}
+@media (prefers-color-scheme:dark){.ev .date::after{mix-blend-mode:normal;opacity:.9}}
 .date b{display:block;font-size:26px;font-weight:700;line-height:1;letter-spacing:-.03em}
 .date span{display:block;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin-top:4px;opacity:.9}
 .ev-main{flex:1;min-width:0}
@@ -137,6 +146,34 @@ a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-un
 .slot.full{opacity:.5}
 .partner-line{font-size:14px;color:var(--gray);margin-top:4px}
 .partner-line b{color:var(--ink);font-weight:600}
+.join{margin-top:64px}
+.join-card{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;background:var(--surface);border:1px solid var(--line);padding:28px 24px 26px}
+.join-art span{position:absolute;z-index:-1;mix-blend-mode:multiply;opacity:.88}
+.ja-peach{top:-24px;right:-34px;width:150px;height:112px;border-radius:22px;background:var(--peach)}
+.ja-terra{top:26px;right:30px;width:78px;aspect-ratio:1;border-radius:50%;background:var(--terra)}
+@media (prefers-color-scheme:dark){.join-art span{mix-blend-mode:normal;opacity:.8}}
+.join h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading);margin-top:6px;max-width:calc(100% - 110px)}
+.join-lead{color:var(--gray);margin-top:10px;max-width:32em}
+.road-z{display:block;width:26px;height:22px;margin:26px 0 0;overflow:visible}
+.road-z polyline{fill:none;stroke:var(--mark);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.road-v{list-style:none;margin:4px 0 24px;padding:0}
+.road-v li{position:relative;padding:0 0 24px 42px}
+.road-v li::before{content:"";position:absolute;left:4px;top:5px;width:14px;aspect-ratio:1;border-radius:50%;background:var(--mark)}
+.road-v li::after{content:"";position:absolute;left:9px;top:25px;bottom:3px;width:4px;background:radial-gradient(circle,var(--mark) 1.9px,transparent 2.3px) center top/4px 11px repeat-y}
+.road-v li.goal-step{padding-bottom:0}
+.road-v li.goal-step::before{left:1px;top:2px;width:20px;background:var(--dot)}
+.road-v li.goal-step::after{display:none}
+.road-v b{display:block;font-size:16.5px;font-weight:700;line-height:1.35;color:var(--ink)}
+.road-v span{display:block;color:var(--gray);font-size:15px;margin-top:2px}
+.isic{display:inline-block!important;margin-top:9px!important;padding:6px 11px;border-radius:10px;background:var(--tint);color:var(--tint-ink)!important;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.isic s{color:var(--last);text-decoration-thickness:2px}
+.copy span{display:inline!important;margin:0!important;color:inherit!important;font-size:inherit!important}
+.copy{display:inline-flex;align-items:center;gap:8px;margin-top:9px;padding:7px 12px;border-radius:10px;border:1.5px dashed var(--emerald);background:transparent;color:var(--ink);font-size:15px;font-weight:700;cursor:pointer}
+@media (prefers-color-scheme:dark){.copy{border-color:var(--peach)}}
+.copy:hover{background:var(--tint)}
+.join .btn{text-decoration:none}
+.join-note{font-size:13px;color:var(--gray);margin-top:14px;max-width:34em}
+.join-link{display:inline-block;margin-top:16px;font-size:14px;font-weight:600;color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--dot)}
 .collab{margin-top:64px}
 .collab h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading)}
 .collab>p{color:var(--gray);margin:10px 0 22px;max-width:32em}
@@ -278,6 +315,25 @@ form .btn{width:100%;padding:15px;margin-top:4px}
     <div class="bar" id="bar"></div>
     <div id="events"></div>
 
+    <section class="join" id="lab">
+      <div class="join-card">
+        <div class="join-art" aria-hidden="true"><span class="ja-peach"></span><span class="ja-terra"></span></div>
+        <p class="cap" data-i18n="joinEyebrow"></p>
+        <h2 data-i18n="joinTitle"></h2>
+        <p class="join-lead" data-i18n="joinLead"></p>
+        <svg class="road-z" viewBox="0 0 26 22" aria-hidden="true"><polyline points="4,3 22,3 11,19"/></svg>
+        <ol class="road-v">
+          <li><b data-i18n="j1t"></b><span data-i18n="j1d"></span></li>
+          <li><b data-i18n="j2t"></b><span data-i18n="j2d"></span></li>
+          <li><b data-i18n="j3t"></b><span data-i18n="j3d"></span><span class="isic" aria-hidden="true"><s>S</s> 421 012 345 678 <s>A</s></span></li>
+          <li><b data-i18n="j4t"></b><span data-i18n="j4d"></span><button class="copy" type="button" id="copyName"><span id="ambName">Lukáš Zimmerman</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></li>
+          <li class="goal-step"><b data-i18n="j5t"></b></li>
+        </ol>
+        <a class="btn" id="joinCta" target="_blank" rel="noopener" data-i18n="joinCta"></a>
+        <p class="join-note" data-i18n="joinNote"></p>
+      </div>
+    </section>
+
     <section class="collab" id="spoluprace">
       <h2 data-i18n="collabTitle"></h2>
       <p data-i18n="collabLead"></p>
@@ -308,6 +364,8 @@ const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbwgjlu5_mLUGv58GQh-k1wterakPV-9jfY7G5zWrDheQqSk_WdxGrlv2y08YdCthWSp/exec",
   partner: "iStores LAB",
   partnerUrl: "https://www.istores.sk/lab",
+  joinUrl: "https://www.istores.sk/lab#kontakt",   // registrácia do programu iStores LAB
+  ambassador: "Lukáš Zimmerman",                    // meno, ktoré uvedú pri registrácii
   instagram: "https://www.instagram.com/lukas.zmmrmn/",
   texture: "",
   textureOpacity: 0.35
@@ -386,6 +444,17 @@ const T = {
     who:"Workshopy sú pre študentov stredných aj vysokých škôl. Prines si ISIC alebo ITIC.",
     partnerLabel:"Spolupráca:",
     collabTitle:"Spolupráce",
+    joinEyebrow:"Program iStores LAB",
+    joinTitle:"Chceš z toho ešte viac?",
+    joinLead:"Ako člen programu iStores LAB máš zľavy na Mac a iPad, špeciálne akcie a komunitu ľudí, ktorí to majú rovnako. Registrácia trvá dve minúty.",
+    j1t:"Otvor registráciu na istores.sk", j1d:"Tlačidlo dole ťa hodí rovno k formuláru.",
+    j2t:"Vyber si „Člen programu“", j2d:"Chceš výhody a komunitu bez záväzkov, takže členstvo je to pravé.",
+    j3t:"Vyplň e-mail, školu a číslo ISIC", j3d:"Z čísla ISIC napíš len číslice, bez písmen na začiatku a na konci. Z preukazu S 421 012 345 678 A teda zadáš 421012345678.",
+    j4t:"Ako ambasádora uveď mňa", j4d:"Do poľa pre ambasádora napíš moje meno. Ťukni naň a skopíruje sa.",
+    j5t:"Hotovo. Vitaj v LABe.",
+    joinCta:"Registrovať sa do programu",
+    joinNote:"Členom programu môžeš byť, ak študuješ dennou formou na vysokej škole a máš aspoň 18 rokov. Na workshopy môžeš prísť aj bez členstva.",
+    copied:"Meno je skopírované.", joinLink:"Ešte nie si v programe iStores LAB? Pozri, ako sa pridať.",
     collabLead:"Workshopy robím aj so školami a organizáciami, ktorým záleží na tom, aby mladí ľudia rástli. Máš nápad na spoločný workshop?",
     collabCta:"Napíš mi na Instagram", igLabel:"Lukáš Zimmerman na Instagrame",
     questions:"Otázky?", days:"d"
@@ -424,6 +493,17 @@ const T = {
     who:"Workshops are for high school and university students. Bring your ISIC or ITIC card.",
     partnerLabel:"Partner:",
     collabTitle:"Collaborations",
+    joinEyebrow:"iStores LAB programme",
+    joinTitle:"Want even more?",
+    joinLead:"As an iStores LAB member you get discounts on Mac and iPad, special offers and a community of people who think like you. Signing up takes two minutes.",
+    j1t:"Open the sign-up on istores.sk", j1d:"The button below takes you straight to the form.",
+    j2t:"Choose “Člen programu” (member)", j2d:"You want the perks and the community with no strings attached, so membership is the one.",
+    j3t:"Fill in your email, school and ISIC number", j3d:"Type only the digits of your ISIC number, without the letters at the start and end. From S 421 012 345 678 A you enter 421012345678.",
+    j4t:"Name me as your ambassador", j4d:"Type my name in the ambassador field. Tap it to copy.",
+    j5t:"Done. Welcome to the LAB.",
+    joinCta:"Sign up for the programme",
+    joinNote:"Membership is for full-time university students aged 18+. You can come to the workshops without being a member.",
+    copied:"Name copied.", joinLink:"Not in the iStores LAB programme yet? See how to join.",
     collabLead:"I also run workshops with schools and organisations that care about young people growing. Got an idea for a joint workshop?",
     collabCta:"Message me on Instagram", igLabel:"Lukáš Zimmerman on Instagram",
     questions:"Questions?", days:"d"
@@ -463,6 +543,8 @@ function applyLang(){
   if ($("#wLogo")) $("#wLogo").innerHTML = logoMain();
   $("#aLogo").innerHTML = logoLine();
   $("#collabCta").href = CONFIG.instagram;
+  $("#joinCta").href = CONFIG.joinUrl;
+  $("#ambName").textContent = CONFIG.ambassador;
   $("#partners").hidden = !partners.length;
   $("#partners").innerHTML = partners.map((p, i) => {
     const g = (p.letter || p.name.trim()[0] || "").slice(0,1);
@@ -605,6 +687,7 @@ function showDone(e, s, email){
         <button class="btn" type="button" id="ics">${t("calendar")}</button>
         <button class="btn ghost" type="button" data-close>${t("close")}</button>
       </div>
+      <a class="join-link" href="#lab" data-close>${t("joinLink")}</a>
     </div>`;
   $("#ics").onclick = () => downloadIcs(e, s);
 }
@@ -634,6 +717,12 @@ document.addEventListener("click", ev => {
   const lb = ev.target.closest("#lang button"); if (lb){ lang = lb.dataset.lang; applyLang(); return; }
   const ch = ev.target.closest(".chip[data-city]"); if (ch){ city = ch.dataset.city || null; render(); return; }
   if (ev.target.closest("#archBtn")){ openArchive(); return; }
+  if (ev.target.closest("#copyName")){
+    const done = () => toast(t("copied"));
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(CONFIG.ambassador).then(done, () => toast(CONFIG.ambassador));
+    else toast(CONFIG.ambassador);
+    return;
+  }
   const b = ev.target.closest("[data-id]"); if (b && !b.disabled){ openRegister(events.find(e => e.id === b.dataset.id)); return; }
   if (ev.target.closest("[data-close]") || ev.target.id === "sheet") closeSheet();
 });
