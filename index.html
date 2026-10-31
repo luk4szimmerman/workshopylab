@@ -326,8 +326,10 @@ form .btn{width:100%;padding:15px;margin-top:4px}
           <li><b data-i18n="j1t"></b><span data-i18n="j1d"></span></li>
           <li><b data-i18n="j2t"></b><span data-i18n="j2d"></span></li>
           <li><b data-i18n="j3t"></b><span data-i18n="j3d"></span><span class="isic" aria-hidden="true"><s>S</s> 421 012 345 678 <s>A</s></span></li>
-          <li><b data-i18n="j4t"></b><span data-i18n="j4d"></span><button class="copy" type="button" id="copyName"><span id="ambName">Lukáš Zimmerman</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></li>
-          <li class="goal-step"><b data-i18n="j5t"></b></li>
+          <li><b data-i18n="j4t"></b><span data-i18n="j4d"></span></li>
+          <li><b data-i18n="j5t"></b><span data-i18n="j5d"></span><button class="copy" type="button" id="copyName"><span id="ambName">Lukáš Zimmerman</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></li>
+          <li><b data-i18n="j6t"></b><span data-i18n="j6d"></span></li>
+          <li class="goal-step"><b data-i18n="j7t"></b></li>
         </ol>
         <a class="btn" id="joinCta" target="_blank" rel="noopener" data-i18n="joinCta"></a>
         <p class="join-note" data-i18n="joinNote"></p>
@@ -447,11 +449,13 @@ const T = {
     joinEyebrow:"Program iStores LAB",
     joinTitle:"Chceš z toho ešte viac?",
     joinLead:"Ako člen programu iStores LAB máš zľavy na Mac a iPad, špeciálne akcie a komunitu ľudí, ktorí to majú rovnako. Registrácia trvá dve minúty.",
-    j1t:"Otvor registráciu na istores.sk", j1d:"Tlačidlo dole ťa hodí rovno k formuláru.",
-    j2t:"Vyber si „Člen programu“", j2d:"Chceš výhody a komunitu bez záväzkov, takže členstvo je to pravé.",
-    j3t:"Vyplň e-mail, školu a číslo ISIC", j3d:"Z čísla ISIC napíš len číslice, bez písmen na začiatku a na konci. Z preukazu S 421 012 345 678 A teda zadáš 421012345678.",
-    j4t:"Ako ambasádora uveď mňa", j4d:"Do poľa pre ambasádora napíš moje meno. Ťukni naň a skopíruje sa.",
-    j5t:"Hotovo. Vitaj v LABe.",
+    j1t:"Otvor registráciu na istores.sk", j1d:"Tlačidlo dole ťa hodí rovno k formuláru „Zaujal ťa iStores LAB?“.",
+    j2t:"Vyplň meno, e-mail, univerzitu a fakultu", j2d:"Všetky štyri polia sú povinné.",
+    j3t:"Zadaj číslo ISIC iba číslicami", j3d:"Do poľa „Číslo ISIC/ITIC preukazu“ napíš len číslice, bez písmen na začiatku a na konci. Z preukazu S 421 012 345 678 A teda zadáš 421012345678.",
+    j4t:"Zaškrtni „Chcem sa stať členom programu“", j4d:"Nájdeš to pod otázkou „Čo ťa zaujíma?“.",
+    j5t:"Ako ambasádora uveď mňa", j5d:"Do poľa „Kto je tvoj ambasádor?“ napíš moje meno. Ťukni naň a skopíruje sa.",
+    j6t:"Potvrď súhlas a klikni na Odoslať", j6d:"Povinný je len súhlas so spracovaním údajov pre účely odpovede. Súhlas na marketing je na tebe.",
+    j7t:"Hotovo. Vitaj v LABe.",
     joinCta:"Registrovať sa do programu",
     joinNote:"Členom programu môžeš byť, ak študuješ dennou formou na vysokej škole a máš aspoň 18 rokov. Na workshopy môžeš prísť aj bez členstva.",
     copied:"Meno je skopírované.", joinLink:"Ešte nie si v programe iStores LAB? Pozri, ako sa pridať.",
@@ -496,11 +500,13 @@ const T = {
     joinEyebrow:"iStores LAB programme",
     joinTitle:"Want even more?",
     joinLead:"As an iStores LAB member you get discounts on Mac and iPad, special offers and a community of people who think like you. Signing up takes two minutes.",
-    j1t:"Open the sign-up on istores.sk", j1d:"The button below takes you straight to the form.",
-    j2t:"Choose “Člen programu” (member)", j2d:"You want the perks and the community with no strings attached, so membership is the one.",
-    j3t:"Fill in your email, school and ISIC number", j3d:"Type only the digits of your ISIC number, without the letters at the start and end. From S 421 012 345 678 A you enter 421012345678.",
-    j4t:"Name me as your ambassador", j4d:"Type my name in the ambassador field. Tap it to copy.",
-    j5t:"Done. Welcome to the LAB.",
+    j1t:"Open the sign-up on istores.sk", j1d:"The button below takes you straight to the form “Zaujal ťa iStores LAB?”.",
+    j2t:"Fill in your name, email, university and faculty", j2d:"All four fields are required.",
+    j3t:"Enter your ISIC number as digits only", j3d:"In the field “Číslo ISIC/ITIC preukazu”, type only the digits, without the letters at the start and end. From S 421 012 345 678 A you enter 421012345678.",
+    j4t:"Tick “Chcem sa stať členom programu”", j4d:"It’s the membership option under “Čo ťa zaujíma?” (What are you interested in?).",
+    j5t:"Name me as your ambassador", j5d:"In the field “Kto je tvoj ambasádor?” type my name. Tap it to copy.",
+    j6t:"Give consent and press Odoslať", j6d:"Only the consent to process your data for a reply is required. Marketing consent is up to you.",
+    j7t:"Done. Welcome to the LAB.",
     joinCta:"Sign up for the programme",
     joinNote:"Membership is for full-time university students aged 18+. You can come to the workshops without being a member.",
     copied:"Name copied.", joinLink:"Not in the iStores LAB programme yet? See how to join.",
