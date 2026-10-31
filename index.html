@@ -60,7 +60,8 @@ a.logo{color:inherit;text-decoration:none;border-radius:6px}
 a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--dot)}
 .lockup .with{display:inline-flex;align-items:center;gap:1.1em}
 .lockup .x{color:var(--gray);font-weight:500}
-.lockup .partner{font-weight:700;letter-spacing:-.015em}
+.lockup .partner{font-weight:700;letter-spacing:-.015em;color:inherit;text-decoration:none;border-radius:6px}
+.lockup a.partner:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--dot)}
 
 /* ── Jazyk ── */
 .lang{display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
@@ -139,11 +140,23 @@ a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-un
 .collab{margin-top:64px}
 .collab h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading)}
 .collab>p{color:var(--gray);margin:10px 0 22px;max-width:32em}
-.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:22px}
-.p-tile{display:block;padding:16px 18px;border-radius:16px;background:var(--surface);border:1px solid var(--line);color:inherit;text-decoration:none}
-a.p-tile:hover{border-color:var(--emerald)}
-.p-tile strong{display:block;font-size:17px;font-weight:700;letter-spacing:-.015em;line-height:1.25}
-.p-tile small{display:block;font-size:13px;color:var(--gray);margin-top:3px;line-height:1.4}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin-bottom:22px}
+.partners[hidden]{display:none}
+/* Dlaždice podľa manuálu (strana 8): plocha, priesvitné vrstvy a obrie orezané písmeno */
+.p-tile{position:relative;isolation:isolate;overflow:hidden;container-type:inline-size;aspect-ratio:4/5;border-radius:18px;padding:16px;display:flex;flex-direction:column;text-decoration:none;color:var(--atrament)}
+.p-tile .gl{position:absolute;z-index:-1;font-family:var(--fraunces);font-weight:900;line-height:1;font-size:120cqw;pointer-events:none;user-select:none}
+.p-tile strong{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.p-tile small{display:block;font-size:13px;line-height:1.35;margin-top:4px;max-width:88%}
+a.p-tile:hover{outline:2px solid var(--terra);outline-offset:3px}
+.p-tile.v1{background:var(--emerald);color:var(--cream);justify-content:flex-end}
+.p-tile.v1 .gl{color:var(--emerald-dark);left:-.04em;top:-.22em}
+.p-tile.v1 small{opacity:.85}
+.p-tile.v2{background:var(--cream);border:1px solid #E6DFD4;color:var(--emerald-dark)}
+.p-tile.v2::before{content:"";position:absolute;z-index:-2;right:0;top:46%;width:74%;height:32%;background:var(--peach);border-radius:16px 0 0 16px;opacity:.88}
+.p-tile.v2 .gl{color:var(--terra);mix-blend-mode:multiply;opacity:.9;left:6%;bottom:-.3em}
+.p-tile.v2 small{color:#5C6762}
+.p-tile.v3{background:var(--peach)}
+.p-tile.v3 .gl{color:var(--emerald-dark);right:-.08em;bottom:-.32em}
 .collab .btn{text-decoration:none}
 .empty{padding:32px 22px;border-radius:18px;background:var(--tint);color:var(--tint-ink);font-weight:600;line-height:1.6}
 
@@ -263,7 +276,7 @@ form .btn{width:100%;padding:15px;margin-top:4px}
     <div class="next" id="next" hidden><span data-i18n="nextIn"></span><b id="cd">--:--:--</b></div>
 
     <div class="bar" id="bar"></div>
-    <div id="events"><div class="empty">Načítavam workshopy…</div></div>
+    <div id="events"></div>
 
     <section class="collab" id="spoluprace">
       <h2 data-i18n="collabTitle"></h2>
@@ -294,6 +307,7 @@ form .btn{width:100%;padding:15px;margin-top:4px}
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbwgjlu5_mLUGv58GQh-k1wterakPV-9jfY7G5zWrDheQqSk_WdxGrlv2y08YdCthWSp/exec",
   partner: "iStores LAB",
+  partnerUrl: "https://www.istores.sk/lab",
   instagram: "https://www.instagram.com/lukas.zmmrmn/",
   texture: "",
   textureOpacity: 0.35
@@ -368,7 +382,7 @@ const T = {
     demo:"Ukážkový režim: registrácia sa nikam neuložila.",
     noEvents:"V tomto meste zatiaľ workshop nie je. Pozri iné mestá alebo sleduj @istores.lab.",
     noneAtAll:"Ďalšie workshopy práve chystáme. Sleduj @istores.lab, nech ti nič neujde.",
-    loadErr:"Workshopy sa nenačítali. Obnov stránku.",
+    loadErr:"Workshopy sa nenačítali. Obnov stránku.", loading:"Načítavam workshopy…",
     who:"Workshopy sú pre študentov stredných aj vysokých škôl. Prines si ISIC alebo ITIC.",
     partnerLabel:"Spolupráca:",
     collabTitle:"Spolupráce",
@@ -406,7 +420,7 @@ const T = {
     demo:"Demo mode: the booking wasn’t saved.",
     noEvents:"No workshop in this city yet. Check other cities or follow @istores.lab.",
     noneAtAll:"New workshops are on the way. Follow @istores.lab so you don’t miss them.",
-    loadErr:"Workshops didn’t load. Refresh the page.",
+    loadErr:"Workshops didn’t load. Refresh the page.", loading:"Loading workshops…",
     who:"Workshops are for high school and university students. Bring your ISIC or ITIC card.",
     partnerLabel:"Partner:",
     collabTitle:"Collaborations",
@@ -419,7 +433,7 @@ const T = {
 /* ── Pomocné ── */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let lang = "sk", events = [], past = [], city = null, partners = PARTNERS;
+let lang = "sk", events = [], past = [], city = null, partners = CONFIG.API_URL ? [] : PARTNERS, status = "loading";
 const t = k => T[lang][k];
 const loc = () => lang === "sk" ? "sk-SK" : "en-GB";
 const day = d => new Date(d + "T00:00:00");
@@ -436,8 +450,8 @@ const dateBox = e => `<div class="date"><b>${day(e.date).getDate()}</b><span>${e
 
 /* Logo: znak ZZ s cieľovou bodkou + meno v Interi Bold */
 const MARK = '<svg class="zz" viewBox="0 0 64 100" aria-hidden="true"><polyline points="7,7 51,7 9,50 51,50 9,93 47,93"/><circle cx="58.5" cy="92.5" r="5.5"/></svg>';
-const logoMain = () => `<div class="lockup"><a class="logo" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš<br>Zimmerman</span></a><span class="with"><span class="x">×</span><span class="partner">${esc(CONFIG.partner)}</span></span></div>`;
-const logoLine = () => `<div class="lockup"><a class="logo line" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš Zimmerman</span></a><span class="with"><span class="x">×</span><span class="partner">${esc(CONFIG.partner)}</span></span></div>`;
+const logoMain = () => `<div class="lockup"><a class="logo" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš<br>Zimmerman</span></a><span class="with"><span class="x">×</span><a class="partner" href="${esc(CONFIG.partnerUrl)}" target="_blank" rel="noopener">${esc(CONFIG.partner)}</a></span></div>`;
+const logoLine = () => `<div class="lockup"><a class="logo line" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" aria-label="${esc(t("igLabel"))}">${MARK}<span class="nm">Lukáš Zimmerman</span></a><span class="with"><span class="x">×</span><a class="partner" href="${esc(CONFIG.partnerUrl)}" target="_blank" rel="noopener">${esc(CONFIG.partner)}</a></span></div>`;
 
 function toast(m){ const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role","status"); d.textContent = m; document.body.appendChild(d); setTimeout(() => d.remove(), 4000); }
 
@@ -450,9 +464,11 @@ function applyLang(){
   $("#aLogo").innerHTML = logoLine();
   $("#collabCta").href = CONFIG.instagram;
   $("#partners").hidden = !partners.length;
-  $("#partners").innerHTML = partners.map(p => {
-    const inner = `<strong>${esc(p.name)}</strong>${p.note ? `<small>${esc(tr(p,"note"))}</small>` : ""}`;
-    return p.url ? `<a class="p-tile" href="${esc(p.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="p-tile">${inner}</div>`;
+  $("#partners").innerHTML = partners.map((p, i) => {
+    const g = (p.letter || p.name.trim()[0] || "").slice(0,1);
+    const inner = `<span class="gl" aria-hidden="true">${esc(g)}</span><strong>${esc(p.name)}</strong>${p.note ? `<small>${esc(tr(p,"note"))}</small>` : ""}`;
+    const v = "v" + (i % 3 + 1);
+    return p.url ? `<a class="p-tile ${v}" href="${esc(p.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="p-tile ${v}">${inner}</div>`;
   }).join("");
   render();
 }
@@ -466,7 +482,9 @@ function render(){
     `<button class="chip arch" id="archBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"/><path d="M10 12h4"/></svg>${t("archive")}</button>`;
 
   const list = events.filter(e => city === null || e.city === city);
-  $("#events").innerHTML = !events.length ? `<div class="empty">${t("noneAtAll")}</div>`
+  $("#events").innerHTML = !events.length && status === "loading" ? `<div class="empty">${t("loading")}</div>`
+    : !events.length && status === "error" ? `<div class="empty">${t("loadErr")}</div>`
+    : !events.length ? `<div class="empty">${t("noneAtAll")}</div>`
     : !list.length ? `<div class="empty">${t("noEvents")}</div>`
     : list.map((e,i) => {
       const full = isFull(e);
@@ -634,21 +652,32 @@ if (CONFIG.texture){
   const w = $("#wax");
   w.style.backgroundImage = `url("${CONFIG.texture}")`; w.style.backgroundSize = "cover"; w.style.opacity = CONFIG.textureOpacity;
 }
+/* Texty, logá a úvod sa ukážu hneď. Workshopy sa najprv vezmú z poslednej
+   návštevy (ak existuje) a hneď potom sa načítajú čerstvé z tabuľky. */
+const CACHE_KEY = "lab-workshopy-cache";
+function useData(data, parts){
+  const today = new Date(); today.setHours(0,0,0,0);
+  events = (data || []).filter(e => day(e.date) >= today).sort((a,b) => a.date.localeCompare(b.date));
+  past = (data || []).filter(e => day(e.date) < today).sort((a,b) => b.date.localeCompare(a.date));
+  if (parts) partners = parts;
+  applyLang(); tick();
+}
+applyLang(); tick(); setInterval(tick, 1000);
 (async function load(){
-  try{
-    let data = DEMO_EVENTS;
-    if (CONFIG.API_URL){
-      const res = await (await fetch(CONFIG.API_URL)).json();
-      if (!res.ok) throw new Error(res.error);
-      data = res.events || []; partners = res.partners || [];
-    }
-    const today = new Date(); today.setHours(0,0,0,0);
-    events = data.filter(e => day(e.date) >= today).sort((a,b) => a.date.localeCompare(b.date));
-    past = data.filter(e => day(e.date) < today).sort((a,b) => b.date.localeCompare(a.date));
-    applyLang(); tick(); setInterval(tick, 1000);
+  if (!CONFIG.API_URL){ status = "ok"; useData(DEMO_EVENTS, null); return; }
+  try {
+    const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (c && Array.isArray(c.events)){ status = "ok"; useData(c.events, c.partners || []); }
+  } catch {}
+  try {
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 20000);
+    const res = await (await fetch(CONFIG.API_URL, { signal: ctrl.signal })).json();
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(res.error);
+    status = "ok"; useData(res.events, res.partners || []);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ events: res.events, partners: res.partners })); } catch {}
   } catch {
-    applyLang();
-    $("#events").innerHTML = `<div class="empty">${t("loadErr")}</div>`;
+    if (status === "loading"){ status = "error"; render(); }
   }
 })();
 </script>
