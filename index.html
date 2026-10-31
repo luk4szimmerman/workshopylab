@@ -16,6 +16,20 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
+<!-- Náhľad odkazu (WhatsApp, iMessage, Messenger, Instagram DM). Pri zmene adresy stránky prepíš aj tieto URL. -->
+<meta name="description" content="Bezplatné workshopy iStores LAB s Lukášom Zimmermanom. Vyber si tému a rezervuj si miesto.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="LAB workshopy">
+<meta property="og:title" content="LAB workshopy · Malé kroky, veľké zmeny.">
+<meta property="og:description" content="Bezplatné workshopy iStores LAB s Lukášom Zimmermanom. Vyber si tému a rezervuj si miesto.">
+<meta property="og:url" content="https://luk4szimmerman.github.io/workshopylab/">
+<meta property="og:image" content="https://luk4szimmerman.github.io/workshopylab/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LAB workshopy: Lukáš Zimmerman × iStores LAB. Malé kroky, veľké zmeny.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@144,900&display=swap" rel="stylesheet">
@@ -255,6 +269,14 @@ form .btn{width:100%;padding:15px;margin-top:4px}
 .done h2{font-size:30px;font-weight:700;letter-spacing:-.025em;line-height:1.1;color:var(--heading);margin-bottom:12px}
 .done p{color:var(--gray);margin-bottom:6px}
 .done p b{color:var(--ink)}
+.ev-acts{display:flex;gap:8px;align-items:center}
+.ev-acts .btn{white-space:nowrap}
+.share{flex:none;width:46px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.share:hover{background:var(--tint)}
+.ev.flash{outline:3px solid var(--dot);outline-offset:3px;transition:outline-color 1.2s}
+.done form{padding:12px 0 0}
+.alt{font-size:14px;margin-top:18px}
+.alt a{color:var(--ink);font-weight:600;text-decoration-color:var(--dot);text-underline-offset:3px}
 .done .acts{display:grid;gap:8px;margin-top:22px}
 .done .acts a.btn{text-decoration:none}
 .missed{padding-top:24px}
@@ -452,7 +474,7 @@ const T = {
     eGdpr:"Na registráciu potrebujeme tvoj súhlas so spracovaním údajov.",
     eFull:"Tento čas sa medzitým zaplnil. Vyber si iný.", eDup:"S týmto e-mailom už na tento workshop registrácia je.",
     eGeneric:"Registrácia neprešla. Skús to o chvíľu znova.",
-    doneTitle:"Miesto máš rezervované.", doneMail:e=>`Potvrdenie ti pošleme na ${e}.`,
+    doneTitle:"Miesto máš rezervované.", doneMail:e=>`Potvrdenie aj odkaz na odhlásenie ti pošleme na ${e}.`,
     doneRoad:"Prvý krok máš za sebou. Zvyšok cesty prejdeme spolu.",
     calendar:"Pridať do kalendára", close:"Zavrieť",
     demo:"Ukážkový režim: registrácia sa nikam neuložila.",
@@ -475,6 +497,19 @@ const T = {
     joinCta:"Registrovať sa do programu",
     joinNote:"Členom programu môžeš byť, ak študuješ dennou formou na vysokej škole a máš aspoň 18 rokov. Na workshopy môžeš prísť aj bez členstva.",
     copied:"Meno je skopírované.",
+    share:"Zdieľať workshop", linkCopied:"Odkaz na workshop je skopírovaný.", deepGone:"Tento workshop už nie je v ponuke. Pozri si ostatné.",
+    waitIntro:"Zapíš sa na čakaciu listinu. Keď sa niekto odhlási, hneď ti napíšem e-mail.",
+    waitGdpr:"Súhlasím so spracovaním mena a e-mailu, aby si mi mohol napísať, keď sa uvoľní miesto. Ak máš menej ako 16 rokov, súhlas za teba dáva rodič.",
+    waitSubmit:"Zapísať sa na čakaciu listinu", waitSending:"Zapisujem…",
+    waitDoneTitle:"Si na čakacej listine.", waitDoneText:e=>`Keď sa uvoľní miesto, napíšem ti na ${e}. Miesto ti nedržím, takže keď príde e-mail, neváhaj.`,
+    waitDup:"Na čakacej listine na tento workshop už si.", waitNotFull:"Medzičasom sa uvoľnilo miesto. Zatvor okno a rovno sa zaregistruj.",
+    waitAlt:"Alebo mi napíš:",
+    cancelTitle:"Odhlásenie z workshopu", cancelLoading:"Hľadám tvoju registráciu…",
+    cancelAsk:"Naozaj nemôžeš prísť? Po odhlásení miesto dostane niekto ďalší.",
+    cancelYes:"Áno, odhlásiť ma", cancelNo:"Nie, prídem", cancelSending:"Odhlasujem…",
+    cancelDoneTitle:"Si odhlásený.", cancelDoneText:"Vďaka, že si dal vedieť. Miesto dostane niekto z čakacej listiny. Uvidíme sa nabudúce?",
+    cancelAlready:"Z tohto workshopu už si odhlásený.", cancelPast:"Tento workshop už prebehol, odhlásiť sa z neho nedá.",
+    cancelBad:"Tento odkaz na odhlásenie nefunguje. Napíš mi a vyriešime to.",
     missedBtn:"Nestihol si?", missedTitle:"Miesta sa minuli.",
     missedText:"Nestihol si sa prihlásiť? Napíš mi. Keď sa niekto odhlási alebo pribudne ďalší termín, ozvem sa ti ako prvému.",
     mailBtn:"Napísať e-mail", igBtn:"Napísať na Instagram",
@@ -508,7 +543,7 @@ const T = {
     eGdpr:"We need your consent to process your details.",
     eFull:"This time just filled up. Pick another one.", eDup:"This email is already registered for this workshop.",
     eGeneric:"Booking didn’t go through. Try again in a moment.",
-    doneTitle:"Your spot is booked.", doneMail:e=>`We’ll send a confirmation to ${e}.`,
+    doneTitle:"Your spot is booked.", doneMail:e=>`We’ll send a confirmation with a cancellation link to ${e}.`,
     doneRoad:"The first step is done. We’ll walk the rest of the way together.",
     calendar:"Add to calendar", close:"Close",
     demo:"Demo mode: the booking wasn’t saved.",
@@ -531,6 +566,19 @@ const T = {
     joinCta:"Sign up for the programme",
     joinNote:"Membership is for full-time university students aged 18+. You can come to the workshops without being a member.",
     copied:"Name copied.",
+    share:"Share workshop", linkCopied:"Workshop link copied.", deepGone:"This workshop is no longer available. Check out the others.",
+    waitIntro:"Join the waiting list. If someone cancels, I’ll email you right away.",
+    waitGdpr:"I agree to the processing of my name and email so you can let me know when a spot opens up. If you’re under 16, a parent gives consent for you.",
+    waitSubmit:"Join the waiting list", waitSending:"Adding you…",
+    waitDoneTitle:"You’re on the waiting list.", waitDoneText:e=>`When a spot opens up, I’ll email you at ${e}. I can’t hold it for you, so act fast when the email arrives.`,
+    waitDup:"You’re already on the waiting list for this workshop.", waitNotFull:"A spot just opened up. Close this window and sign up directly.",
+    waitAlt:"Or write to me:",
+    cancelTitle:"Cancel your spot", cancelLoading:"Looking up your booking…",
+    cancelAsk:"Really can’t make it? Once you cancel, someone else gets your spot.",
+    cancelYes:"Yes, cancel my spot", cancelNo:"No, I’m coming", cancelSending:"Cancelling…",
+    cancelDoneTitle:"You’re cancelled.", cancelDoneText:"Thanks for letting me know. Someone from the waiting list gets your spot. See you next time?",
+    cancelAlready:"You’ve already cancelled this workshop.", cancelPast:"This workshop has already taken place.",
+    cancelBad:"This cancellation link doesn’t work. Write to me and we’ll sort it out.",
     missedBtn:"Missed it?", missedTitle:"All spots are taken.",
     missedText:"Didn’t make it in time? Write to me. If someone cancels or a new date opens up, you’ll be the first to know.",
     mailBtn:"Send an email", igBtn:"Message on Instagram",
@@ -602,7 +650,7 @@ function render(){
     : !list.length ? `<div class="empty">${t("noEvents")}</div>`
     : list.map((e,i) => {
       const full = isFull(e);
-      return `<article class="ev" style="animation-delay:${i*70}ms">
+      return `<article class="ev" data-card="${esc(e.id)}" style="animation-delay:${i*70}ms">
         ${dateBox(e)}
         <div class="ev-main">
           <p class="cap">${esc(e.city)} · ${esc(fmt(e.date,{weekday:"long"}))}</p>
@@ -615,7 +663,10 @@ function render(){
               <span class="n ${f && f <= 2 ? "last" : ""}">${!f ? t("full") : f <= 2 ? t("lastLeft")(f) : t("left")(f)}</span>
               <span class="meter"><i style="width:${Math.min(100, s.taken / s.capacity * 100)}%"></i></span></div>`; }).join("")}
           </div>
-          ${full ? `<button class="btn ghost" type="button" data-missed="${esc(e.id)}">${t("missedBtn")}</button>` : `<button class="btn" data-id="${esc(e.id)}">${t("register")}</button>`}
+          <div class="ev-acts">
+            ${full ? `<button class="btn ghost" type="button" data-missed="${esc(e.id)}">${t("missedBtn")}</button>` : `<button class="btn" data-id="${esc(e.id)}">${t("register")}</button>`}
+            <button class="share" type="button" data-share="${esc(e.id)}" aria-label="${esc(t("share"))}" title="${esc(t("share"))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></button>
+          </div>
         </div>
       </article>`;
     }).join("");
@@ -660,7 +711,14 @@ function heroHTML(e){
     </div>`;
 }
 
-/* Plný workshop: kontakt na Lukáša */
+/* Volanie Google skriptu */
+async function api(payload){
+  const r = await fetch(CONFIG.API_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
+  return r.json();
+}
+const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || "");
+
+/* Plný workshop: čakacia listina */
 function openMissed(e){
   const when = fmt(e.date,{day:"numeric",month:"long"});
   const subject = encodeURIComponent(t("mailSubject")(tr(e,"title"), when));
@@ -668,13 +726,87 @@ function openMissed(e){
   openSheet(`${heroHTML(e)}
     <div class="done missed">
       <h2>${t("missedTitle")}</h2>
-      <p>${t("missedText")}</p>
-      <p><a class="mail" href="mailto:${esc(CONFIG.email)}?subject=${subject}&body=${body}">${esc(CONFIG.email)}</a></p>
+      <p>${t("waitIntro")}</p>
+      <form novalidate id="waitForm">
+        <label class="f">${t("name")}<input name="name" autocomplete="name"></label>
+        <label class="f">${t("email")}<input name="email" type="email" autocomplete="email"></label>
+        <label class="chk"><input type="checkbox" name="gdpr">${t("waitGdpr")}</label>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <p class="err" hidden></p>
+        <button class="btn" type="submit">${t("waitSubmit")}</button>
+      </form>
+      <p class="alt">${t("waitAlt")} <a href="mailto:${esc(CONFIG.email)}?subject=${subject}&body=${body}">${esc(CONFIG.email)}</a>, <a href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">Instagram</a></p>
+    </div>`);
+  $("#waitForm").addEventListener("submit", ev => submitWait(ev, e));
+}
+
+async function submitWait(ev, e){
+  ev.preventDefault();
+  const f = ev.target, err = f.querySelector(".err"), btn = f.querySelector("[type=submit]");
+  const d = Object.fromEntries(new FormData(f));
+  const problem = !d.name?.trim() ? "eName" : !okEmail(d.email) ? "eEmail" : !d.gdpr ? "eGdpr" : "";
+  if (problem){ err.textContent = t(problem); err.hidden = false; return; }
+  err.hidden = true; btn.disabled = true; btn.textContent = t("waitSending");
+  try{
+    if (CONFIG.API_URL){
+      const res = await api({ action:"waitlist", eventId:e.id, name:d.name.trim(), email:d.email.trim(), lang, website:d.website || "" });
+      if (!res.ok) throw new Error(res.error === "duplicate" ? "waitDup" : res.error === "notfull" ? "waitNotFull" : res.error === "invalid" ? "eEmail" : "eGeneric");
+    } else toast(t("demo"));
+    const box = $("#sh .missed");
+    box.innerHTML = `<svg class="road" viewBox="0 0 160 58" aria-hidden="true"><polyline points="6,6 66,6 10,50"/>${[30,48,66,84,102,120].map((x,i) => `<circle class="s" cx="${x}" cy="50" r="4.5" style="animation-delay:${.55 + i*.12}s"/>`).join("")}<circle class="g" cx="146" cy="47" r="8"/></svg>
+      <h2>${t("waitDoneTitle")}</h2><p>${esc(t("waitDoneText")(d.email.trim()))}</p>
+      <div class="acts"><button class="btn ghost" type="button" data-close>${t("close")}</button></div>`;
+  } catch(x){
+    err.textContent = T[lang][x.message] || t("eGeneric"); err.hidden = false;
+    btn.disabled = false; btn.textContent = t("waitSubmit");
+    if (x.message === "waitNotFull") refresh();
+  }
+}
+
+/* Odhlásenie cez odkaz z e-mailu (?zrusit=…) */
+async function openCancel(token){
+  const head = `<div class="sh-plain"><h2>${t("cancelTitle")}</h2>${xBtn}</div>`;
+  const msg = text => openSheet(`${head}<div class="done"><p>${text}</p><div class="acts"><button class="btn ghost" type="button" data-close>${t("close")}</button></div></div>`);
+  if (!CONFIG.API_URL) return;
+  openSheet(`${head}<div class="done"><p>${t("cancelLoading")}</p></div>`);
+  let info;
+  try { info = await api({ action:"lookup", token }); } catch { return msg(t("cancelBad")); }
+  if (!info.ok) return msg(t("cancelBad"));
+  if (info.status === "cancelled") return msg(t("cancelAlready"));
+  if (info.status === "past") return msg(t("cancelPast"));
+  openSheet(`${heroHTML(info)}
+    <div class="done" id="cancelBox">
+      <h2>${t("cancelTitle")}</h2>
+      <p>${info.time ? esc(info.time) + "<br>" : ""}${t("cancelAsk")}</p>
+      <p class="err" hidden></p>
       <div class="acts">
-        <a class="btn" href="mailto:${esc(CONFIG.email)}?subject=${subject}&body=${body}">${t("mailBtn")}</a>
-        <a class="btn ghost" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">${t("igBtn")}</a>
+        <button class="btn" type="button" id="doCancel">${t("cancelYes")}</button>
+        <button class="btn ghost" type="button" data-close>${t("cancelNo")}</button>
       </div>
     </div>`);
+  $("#doCancel").onclick = async () => {
+    const btn = $("#doCancel"), err = $("#cancelBox .err");
+    btn.disabled = true; btn.textContent = t("cancelSending");
+    try{
+      const res = await api({ action:"cancel", token });
+      if (!res.ok) throw new Error(res.error === "closed" ? "cancelPast" : "cancelBad");
+      $("#cancelBox").innerHTML = `<h2>${t("cancelDoneTitle")}</h2><p>${t("cancelDoneText")}</p><div class="acts"><button class="btn ghost" type="button" data-close>${t("close")}</button></div>`;
+      refresh();
+    } catch(x){
+      err.textContent = T[lang][x.message] || t("eGeneric"); err.hidden = false;
+      btn.disabled = false; btn.textContent = t("cancelYes");
+    }
+  };
+}
+
+/* Zdieľanie odkazu na konkrétny workshop (?w=…) */
+async function shareEvent(e){
+  const url = location.origin + location.pathname + "?w=" + encodeURIComponent(e.id);
+  if (navigator.share){
+    try { await navigator.share({ title: tr(e,"title"), text: `${tr(e,"title")} · ${fmt(e.date,{day:"numeric",month:"long"})}`, url }); } catch {}
+    return;
+  }
+  try { await navigator.clipboard.writeText(url); toast(t("linkCopied")); } catch { toast(url); }
 }
 
 function openRegister(e){
@@ -708,8 +840,7 @@ async function submit(ev, e){
   const payload = { eventId:e.id, slotId:slot.id, name:d.name.trim(), email:d.email.trim(), school:d.school.trim(), lang, website:d.website || "" };
   try{
     if (CONFIG.API_URL){
-      const r = await fetch(CONFIG.API_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
-      const res = await r.json();
+      const res = await api({ action:"register", ...payload });
       if (!res.ok) throw new Error(res.error === "full" ? "eFull" : res.error === "duplicate" ? "eDup" : res.error === "invalid" ? "eEmail" : "eGeneric");
       slot.taken = res.taken ?? slot.taken + 1;
     } else {
@@ -771,6 +902,7 @@ document.addEventListener("click", ev => {
   const ch = ev.target.closest(".chip[data-city]"); if (ch){ city = ch.dataset.city || null; render(); return; }
   if (ev.target.closest("#archBtn")){ openArchive(); return; }
   const mb = ev.target.closest("[data-missed]"); if (mb){ openMissed(events.find(e => e.id === mb.dataset.missed)); return; }
+  const sb = ev.target.closest("[data-share]"); if (sb){ shareEvent(events.find(e => e.id === sb.dataset.share)); return; }
   if (ev.target.closest("#copyName")){
     const done = () => toast(t("copied"));
     if (navigator.clipboard?.writeText) navigator.clipboard.writeText(CONFIG.ambassador).then(done, () => toast(CONFIG.ambassador));
@@ -781,13 +913,15 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("[data-close]") || ev.target.id === "sheet") closeSheet();
 });
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && $("#sheet").classList.contains("open")) closeSheet(); });
-$("#start").onclick = () => {
-  $("#welcome").classList.add("gone");
+function enterApp(instant){
+  const w = $("#welcome"); if (!w) return;
   $("#app").hidden = false;
   const l = $("#lang"); l.classList.remove("float"); $(".app-top").appendChild(l);
   window.scrollTo(0,0);
-  setTimeout(() => $("#welcome").remove(), 450);
-};
+  if (instant) w.remove();
+  else { w.classList.add("gone"); setTimeout(() => w.remove(), 450); }
+}
+$("#start").onclick = () => enterApp(false);
 
 /* ── Štart ── */
 $("#fLogo").innerHTML = `<div class="lockup"><div class="logo line" role="img" aria-label="Lukáš Zimmerman">${MARK}<span class="nm">Lukáš Zimmerman</span></div></div>`;
@@ -798,30 +932,49 @@ if (CONFIG.texture){
 /* Texty, logá a úvod sa ukážu hneď. Workshopy sa najprv vezmú z poslednej
    návštevy (ak existuje) a hneď potom sa načítajú čerstvé z tabuľky. */
 const CACHE_KEY = "lab-workshopy-cache";
+const params = new URLSearchParams(location.search);
+const deepId = params.get("w"), cancelToken = params.get("zrusit");
+let deepDone = !deepId;
+if (deepId || cancelToken){
+  history.replaceState(null, "", location.pathname);   // po obnovení sa okno neotvorí znova
+  enterApp(true);
+}
+
 function useData(data, parts){
   const today = new Date(); today.setHours(0,0,0,0);
   events = (data || []).filter(e => day(e.date) >= today).sort((a,b) => a.date.localeCompare(b.date));
   past = (data || []).filter(e => day(e.date) < today).sort((a,b) => b.date.localeCompare(a.date));
   if (parts) partners = parts;
   applyLang(); tick();
+  if (!deepDone && status === "ok"){
+    deepDone = true;
+    const e = events.find(x => x.id === deepId);
+    if (!e){ toast(t("deepGone")); return; }
+    const card = document.querySelector(`[data-card="${CSS.escape(e.id)}"]`);
+    if (card){ card.scrollIntoView({ block:"center" }); card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 1600); }
+    isFull(e) ? openMissed(e) : openRegister(e);
+  }
 }
+
+async function refresh(){
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 20000);
+  const res = await (await fetch(CONFIG.API_URL, { signal: ctrl.signal })).json();
+  clearTimeout(timer);
+  if (!res.ok) throw new Error(res.error);
+  status = "ok"; useData(res.events, res.partners || []);
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ events: res.events, partners: res.partners })); } catch {}
+}
+
 applyLang(); tick(); setInterval(tick, 1000);
 (async function load(){
   if (!CONFIG.API_URL){ status = "ok"; useData(DEMO_EVENTS, null); return; }
+  if (cancelToken) openCancel(cancelToken);
   try {
     const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
-    if (c && Array.isArray(c.events)){ status = "ok"; useData(c.events, c.partners || []); }
+    if (c && Array.isArray(c.events) && !deepId){ status = "ok"; useData(c.events, c.partners || []); }
   } catch {}
-  try {
-    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 20000);
-    const res = await (await fetch(CONFIG.API_URL, { signal: ctrl.signal })).json();
-    clearTimeout(timer);
-    if (!res.ok) throw new Error(res.error);
-    status = "ok"; useData(res.events, res.partners || []);
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ events: res.events, partners: res.partners })); } catch {}
-  } catch {
-    if (status === "loading"){ status = "error"; render(); }
-  }
+  try { await refresh(); }
+  catch { if (status === "loading"){ status = "error"; render(); if (!deepDone){ deepDone = true; toast(t("loadErr")); } } }
 })();
 </script>
 </body>
