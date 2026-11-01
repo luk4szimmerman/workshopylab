@@ -203,23 +203,24 @@ a.logo:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-un
 .collab{margin-top:64px}
 .collab h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--heading)}
 .collab>p{color:var(--gray);margin:10px 0 22px;max-width:32em}
-.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin-bottom:22px}
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:22px}
 .partners[hidden]{display:none}
 /* Dlaždice podľa manuálu (strana 8): plocha, priesvitné vrstvy a obrie orezané písmeno */
-.p-tile{position:relative;isolation:isolate;overflow:hidden;container-type:inline-size;aspect-ratio:4/5;border-radius:18px;padding:16px;display:flex;flex-direction:column;text-decoration:none;color:var(--atrament)}
-.p-tile .gl{position:absolute;z-index:-1;font-family:var(--fraunces);font-weight:900;line-height:1;font-size:120cqw;pointer-events:none;user-select:none}
-.p-tile strong{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
-.p-tile small{display:block;font-size:13px;line-height:1.35;margin-top:4px;max-width:88%}
+/* Spolupráce: krémové karty s logom a vrstvou vosku (návrh A).
+   Karty ostávajú krémové aj v tmavom režime, lebo logá sú robené na svetlé pozadie. */
+.p-tile{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;border-radius:16px;padding:14px 16px 16px;background:#FFFDFA;border:1px solid #E6DFD4;color:var(--atrament);text-decoration:none}
+.p-tile::before,.p-tile::after{content:"";position:absolute;z-index:-1;opacity:.88;pointer-events:none}
+.p-tile.v1::before{right:-22px;top:-16px;width:66px;height:46px;border-radius:12px;background:var(--peach)}
+.p-tile.v1::after{right:12px;top:12px;width:26px;aspect-ratio:1;border-radius:50%;background:var(--terra);mix-blend-mode:multiply}
+.p-tile.v2::before{left:-18px;bottom:-18px;width:40px;aspect-ratio:1;border-radius:50%;background:var(--terra)}
+.p-tile.v3::before{right:-16px;bottom:-14px;width:72px;height:40px;border-radius:12px;background:var(--emerald)}
+.p-tile.v3::after{right:34px;bottom:-12px;width:28px;aspect-ratio:1;border-radius:50%;background:var(--peach);mix-blend-mode:multiply}
+.p-logo{height:84px;display:flex;align-items:center;justify-content:center;margin:6px 0 12px}
+.p-logo img{max-width:82%;max-height:62px;object-fit:contain}
+.p-logo .txt{font-size:20px;font-weight:700;letter-spacing:-.02em;text-align:center;line-height:1.15;color:var(--emerald-dark)}
+.p-tile strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+.p-tile small{display:block;font-size:12.5px;line-height:1.4;margin-top:3px;color:#5C6762}
 a.p-tile:hover{outline:2px solid var(--terra);outline-offset:3px}
-.p-tile.v1{background:var(--emerald);color:var(--cream);justify-content:flex-end}
-.p-tile.v1 .gl{color:var(--emerald-dark);left:-.04em;top:-.22em}
-.p-tile.v1 small{opacity:.85}
-.p-tile.v2{background:var(--cream);border:1px solid #E6DFD4;color:var(--emerald-dark)}
-.p-tile.v2::before{content:"";position:absolute;z-index:-2;right:0;top:46%;width:74%;height:32%;background:var(--peach);border-radius:16px 0 0 16px;opacity:.88}
-.p-tile.v2 .gl{color:var(--terra);mix-blend-mode:multiply;opacity:.9;left:6%;bottom:-.3em}
-.p-tile.v2 small{color:#5C6762}
-.p-tile.v3{background:var(--peach)}
-.p-tile.v3 .gl{color:var(--emerald-dark);right:-.08em;bottom:-.32em}
 .collab .btn{text-decoration:none}
 .empty{padding:32px 22px;border-radius:18px;background:var(--tint);color:var(--tint-ink);font-weight:600;line-height:1.6}
 
@@ -440,12 +441,12 @@ const DEMO_EVENTS = [
 /* Spolupráce – url doplň, ak chceš, aby sa dlaždica dala rozkliknúť.
    Zobrazuj tu len spolupráce, ktoré máš potvrdené. */
 const PARTNERS = [
-  { name:"Hra bez Hraníc", url:"" },
-  { name:"DAB / StartDAB", note:"Divadlo Andreja Bagara", note_en:"Andrej Bagar Theatre", url:"" },
-  { name:"DASATO", url:"" },
-  { name:"Mladí Lekári", url:"https://mladilekari.sk" },
-  { name:"VŠMU", note:"Vysoká škola múzických umení", note_en:"Academy of Performing Arts in Bratislava", url:"" },
-  { name:"UKF", note:"Univerzita Konštantína Filozofa v Nitre", note_en:"Constantine the Philosopher University in Nitra", url:"" }
+  { name:"Hra bez Hraníc", url:"https://www.instagram.com/hrabezhranic/", logo:"" },
+  { name:"DAB / StartDAB", note:"Divadlo Andreja Bagara", note_en:"Andrej Bagar Theatre", url:"https://www.dab.sk", logo:"" },
+  { name:"DASATO", url:"https://www.dasato.org", logo:"" },
+  { name:"Mladí Lekári", url:"https://www.mladilekari.sk", logo:"" },
+  { name:"VŠMU", note:"Divadelná fakulta", note_en:"Faculty of Theatre", url:"https://www.vsmu.sk/df/", logo:"" },
+  { name:"UKF", note:"Univerzita Konštantína Filozofa v Nitre", note_en:"Constantine the Philosopher University in Nitra", url:"https://www.ukf.sk", logo:"" }
 ];
 
 /* ── Texty (tón: hravý, ľudský, tykáme, krátke vety) ── */
@@ -627,8 +628,10 @@ function applyLang(){
   $("#ambName").textContent = CONFIG.ambassador;
   $("#partners").hidden = !partners.length;
   $("#partners").innerHTML = partners.map((p, i) => {
-    const g = (p.letter || p.name.trim()[0] || "").slice(0,1);
-    const inner = `<span class="gl" aria-hidden="true">${esc(g)}</span><strong>${esc(p.name)}</strong>${p.note ? `<small>${esc(tr(p,"note"))}</small>` : ""}`;
+    const logo = p.logo
+      ? `<img src="${esc(p.logo)}" alt="${esc(p.name)}" loading="lazy" onerror="this.closest('.p-tile').querySelector('strong')?.remove();this.replaceWith(Object.assign(document.createElement('span'),{className:'txt',textContent:this.alt}))">`
+      : `<span class="txt">${esc(p.name)}</span>`;
+    const inner = `<div class="p-logo">${logo}</div>${p.logo ? `<strong>${esc(p.name)}</strong>` : ""}${tr(p,"note") ? `<small>${esc(tr(p,"note"))}</small>` : ""}`;
     const v = "v" + (i % 3 + 1);
     return p.url ? `<a class="p-tile ${v}" href="${esc(p.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="p-tile ${v}">${inner}</div>`;
   }).join("");
